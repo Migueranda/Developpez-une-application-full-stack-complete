@@ -19,17 +19,17 @@ import java.util.Date;
 @Table(name = "users")
 public class UserEntity {
 
-    public UserEntity(UserDto userDto){
-        Date date = new Date();
-
-        this.setId(userDto.getId());
-        this.setUsername(userDto.getUserName());
-        this.setEmail(userDto.getEmail());
-        this.setPassword(userDto.getPassword());
-        this.setToken(userDto.getToken());
-        this.setCreated_at(new Timestamp(date.getTime()));
-        this.setUpdated_at(new Timestamp(date.getTime()));
-    }
+//    public UserEntity(UserDto userDto){
+//        Date date = new Date();
+//
+//        this.setId(userDto.getId());
+//        this.setUsername(userDto.getUserName());
+//        this.setEmail(userDto.getEmail());
+//        this.setPassword(userDto.getPassword());
+//        this.setToken(userDto.getToken());
+//        this.setCreated_at(new Timestamp(date.getTime()));
+//        this.setUpdated_at(new Timestamp(date.getTime()));
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

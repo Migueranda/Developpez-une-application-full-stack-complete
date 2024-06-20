@@ -1,10 +1,16 @@
 package com.openclassrooms.mddapi.services;
 
+import com.openclassrooms.mddapi.mapper.SubjectMapper;
 import com.openclassrooms.mddapi.model.dtos.SubjectDto;
 import com.openclassrooms.mddapi.model.entities.Subject;
+import com.openclassrooms.mddapi.model.entities.UserEntity;
 import com.openclassrooms.mddapi.repositories.SubjectRepository;
+import com.openclassrooms.mddapi.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.Data;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +20,27 @@ import java.util.stream.StreamSupport;
 @Data
 @Service
 public class SubjectService {
-    private final SubjectRepository subjectRepository;
-
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository){
+    private final SubjectRepository subjectRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private SubjectMapper subjectMapper;
+
+    public SubjectService(SubjectRepository subjectRepository, SubjectMapper subjectMapper) {
         this.subjectRepository = subjectRepository;
+        this.subjectMapper = subjectMapper;
     }
+
+//    @Autowired
+//    public SubjectService(SubjectRepository subjectRepository){
+//        this.subjectRepository = subjectRepository;
+//    }
+//
+//    @Autowired
+//    public void UserService(UserRepository userRepository){
+//        this.userRepository = userRepository;
+//    }
     public List<Subject> getSubject(SubjectDto subjectDto) {
         Iterable<Subject> subjects = subjectRepository.findAll();
 
@@ -29,4 +50,59 @@ public class SubjectService {
 //        result.forEach(subject -> System.out.println(subject.getTitle()));
         return result;
     }
+
+    public void subscribe(Long id, Long userId) throws ChangeSetPersister.NotFoundException, BadRequestException {
+        // Récupération du sujet et d'utilisateur par son ID
+        Subject subject = this.subjectRepository.findById(id).orElse(null);
+        UserEntity user = this.userRepository.findById(userId).orElse(null);
+
+        // Vérification si le sujet ou l'utilisateur n'existent pas
+        if (subject == null || user == null) {
+            throw new ChangeSetPersister.NotFoundException();
+        }
+        // Vérification si l'utilisateur est déjà abonné au sujet
+        boolean alreadySubscribe = subject.getUsers().stream().anyMatch(o -> o.getId().equals(userId));
+
+        // Si l'utilisateur est déjà abonné, lancer une exception
+        if(alreadySubscribe) {
+            throw new BadRequestException();
+        }
+        // Ajouter l'utilisateur à la liste des abonnés du sujet
+        subject.getUsers().add(user);
+        // Sauvegarder le sujet mis à jour dans le repository
+        this.subjectRepository.save(subject);
+
+    }
+
+    public SubjectDto updateSubject (Long id, SubjectDto subjectDto){
+
+        Subject existingSubject = subjectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Subject not found for id: " + id));
+
+        existingSubject.setTitle(subjectDto.getTitle());
+        existingSubject.setDescription(subjectDto.getDescription());
+
+        Subject updatedSubject = subjectRepository.save(existingSubject);
+        return subjectMapper.toDto(updatedSubject);
+
+    }
+
+    public void  unsubscribe(Long id, Long userId) throws ChangeSetPersister.NotFoundException, BadRequestException {
+        Subject subject = this.subjectRepository.findById(id).orElse(null);
+        if (subject == null) {
+            throw new ChangeSetPersister.NotFoundException();
+        }
+
+        boolean alreadySubscribe = subject.getUsers().stream().anyMatch(o -> o.getId().equals(userId));
+
+        if(!alreadySubscribe) {
+            throw new BadRequestException();
+        }
+
+        subject.setUsers(subject.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
+
+        this.subjectRepository.save(subject);
+    }
+
+
 }
