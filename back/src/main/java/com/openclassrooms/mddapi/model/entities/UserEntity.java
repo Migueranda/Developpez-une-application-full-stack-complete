@@ -10,27 +10,16 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 @Data
-@Table(name = "users")
+@Table(name = "user")
 public class UserEntity {
-
-//    public UserEntity(UserDto userDto){
-//        Date date = new Date();
-//
-//        this.setId(userDto.getId());
-//        this.setUsername(userDto.getUserName());
-//        this.setEmail(userDto.getEmail());
-//        this.setPassword(userDto.getPassword());
-//        this.setToken(userDto.getToken());
-//        this.setCreated_at(new Timestamp(date.getTime()));
-//        this.setUpdated_at(new Timestamp(date.getTime()));
-//    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -45,14 +34,11 @@ public class UserEntity {
     @Column(name = "PASSWORD")
     private String password;
 
-    @Transient
-    private String token;
-
-    @Column(name = "CREATED_AT")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    private Timestamp created_at;
-
-    @Column(name = "UPDATED_AT")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    private Timestamp updated_at;
+    @ManyToMany
+    @JoinTable(
+            name = "subscription",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "theme_id")
+    )
+    private Set<Subject> subjects = new HashSet<>();  //  HashSet pour éviter les doublons et initialiser la collection
 }

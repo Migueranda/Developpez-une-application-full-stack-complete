@@ -23,11 +23,7 @@ import java.util.stream.Collectors;
         private String userName;
         private String email;
         private String password;
-        private String token;
-        private Timestamp created_at;
-        private Timestamp updated_at;
         private List<SubjectDto> subscription;
-
 
         public static UserDto convertToDto (UserEntity userEntity, List<Subject> subjects){
             UserDto userDto = new UserDto();
@@ -35,15 +31,11 @@ import java.util.stream.Collectors;
             userDto.setUserName(userEntity.getUsername());
             userDto.setEmail(userEntity.getEmail());
             userDto.setPassword(userEntity.getPassword());
-            userDto.setToken(userEntity.getToken());
-            userDto.setCreated_at(userEntity.getCreated_at());
-            userDto.setUpdated_at(userEntity.getUpdated_at());
 
             userDto.setSubscription(subjects.stream()
                     .map(SubjectDto::convertToDto)
                     .collect(Collectors.toList()));
-
             return userDto;
         }
-
     }
+

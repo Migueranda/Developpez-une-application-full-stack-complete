@@ -7,5 +7,5 @@
 
     public interface SubjectRepository extends JpaRepository <Subject, Long> {
         List<Subject> findByUsers_Id(Long user_id);
-        //Subject findByTitle(String title);
+
     }

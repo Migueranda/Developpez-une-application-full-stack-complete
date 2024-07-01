@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "SUBJECT")
@@ -30,11 +31,7 @@ public class Subject {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "subscription",
-            joinColumns = @JoinColumn( name = "subject_id" ),
-            inverseJoinColumns = @JoinColumn( name = "user_id" ) )
+    @ManyToMany(mappedBy = "subjects")
+    private Set<UserEntity> users;
 
-    private List<UserEntity> users;
 }

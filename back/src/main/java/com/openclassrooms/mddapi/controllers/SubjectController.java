@@ -24,28 +24,6 @@ public class SubjectController {
     public Map<String, List<Subject>> getSubject(SubjectDto subjectDto) {
         return Map.of("subject", subjectService.getSubject(subjectDto));
     }
-    @PostMapping("{id}/subscribe/{userId}")
-    public ResponseEntity<?> subscribe(@PathVariable("id") String id, @PathVariable("userId") String userId) {
-
-        try {
-            this.subjectService.subscribe(Long.parseLong(id), Long.parseLong(userId));
-
-            return ResponseEntity.ok().build();
-        } catch (NumberFormatException | ChangeSetPersister.NotFoundException | BadRequestException e) {
-            return ResponseEntity.badRequest().build();
-        }
-
-    }
-    @DeleteMapping("{id}/subscribe/{userId}")
-    public ResponseEntity<?> unsubscribe(@PathVariable("id") String id, @PathVariable("userId") String userId){
-        try {
-            this.subjectService.unsubscribe(Long.parseLong(id), Long.parseLong(userId));
-
-            return ResponseEntity.ok().build();
-        } catch (NumberFormatException | ChangeSetPersister.NotFoundException | BadRequestException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 
     @PutMapping("/subject/{id}")
     public ResponseEntity<?> updateSubject(@PathVariable("id") String id, @Valid @RequestBody SubjectDto subjectDto){

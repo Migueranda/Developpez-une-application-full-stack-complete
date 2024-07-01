@@ -69,16 +69,19 @@ public class UserService {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("UserEntity not found for id: " + id));
 
+//       List<Subject> subjects = subjectRepository.findByUsers_Id(id);
+
         List<Subject> subjects = subjectRepository.findByUsers_Id(id);
 
-        subjects.forEach(subject -> {
-            System.out.println("Subject ID: " + subject.getId());
-            System.out.println("Subject Title: " + subject.getTitle());
-            System.out.println("Subject Description: " + subject.getDescription());
-        });
-        System.out.println("Subject all: " + subjects);
-//        return UserDto.convertToDto(userEntity, subjects);
+//        subjects.forEach(subject -> {
+//            System.out.println("Subject ID: " + subject.getId());
+//            System.out.println("Subject Title: " + subject.getTitle());
+//            System.out.println("Subject Description: " + subject.getDescription());
+//        });
+//        System.out.println("Subject all: " + subjects);
+//
         return userMapper.toDto(userEntity, subjects);
+        //return userMapper.toDto(userEntity);
     }
 
     public UserDto updateUser (Long id, UserDto userDto){

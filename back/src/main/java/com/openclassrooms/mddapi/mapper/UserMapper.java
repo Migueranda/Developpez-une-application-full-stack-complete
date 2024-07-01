@@ -1,7 +1,8 @@
 package com.openclassrooms.mddapi.mapper;
 
-import com.openclassrooms.mddapi.model.dtos.UserDto;
 import com.openclassrooms.mddapi.model.dtos.SubjectDto;
+import com.openclassrooms.mddapi.model.dtos.UserDto;
+//import com.openclassrooms.mddapi.model.dtos.SubjectDto;
 import com.openclassrooms.mddapi.model.entities.UserEntity;
 import com.openclassrooms.mddapi.model.entities.Subject;
 import org.springframework.stereotype.Component;
@@ -23,9 +24,6 @@ public class UserMapper implements EntityMapper<UserDto, UserEntity> {
                 .username(dto.getUserName())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
-                .token(dto.getToken())
-                .created_at(dto.getCreated_at())
-                .updated_at(dto.getUpdated_at())
                 .build();
     }
 
@@ -40,9 +38,6 @@ public class UserMapper implements EntityMapper<UserDto, UserEntity> {
                 .userName(entity.getUsername())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
-                .token(entity.getToken())
-                .created_at(entity.getCreated_at())
-                .updated_at(entity.getUpdated_at())
                 .build();
     }
 
@@ -60,9 +55,6 @@ public class UserMapper implements EntityMapper<UserDto, UserEntity> {
                 .userName(entity.getUsername())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
-                .token(entity.getToken())
-                .created_at(entity.getCreated_at())
-                .updated_at(entity.getUpdated_at())
                 .subscription(subjectDtos)
                 .build();
     }

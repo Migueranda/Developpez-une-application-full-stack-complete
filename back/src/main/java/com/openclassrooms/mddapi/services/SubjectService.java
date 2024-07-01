@@ -32,15 +32,6 @@ public class SubjectService {
         this.subjectMapper = subjectMapper;
     }
 
-//    @Autowired
-//    public SubjectService(SubjectRepository subjectRepository){
-//        this.subjectRepository = subjectRepository;
-//    }
-//
-//    @Autowired
-//    public void UserService(UserRepository userRepository){
-//        this.userRepository = userRepository;
-//    }
     public List<Subject> getSubject(SubjectDto subjectDto) {
         Iterable<Subject> subjects = subjectRepository.findAll();
 
@@ -51,28 +42,6 @@ public class SubjectService {
         return result;
     }
 
-    public void subscribe(Long id, Long userId) throws ChangeSetPersister.NotFoundException, BadRequestException {
-        // Récupération du sujet et d'utilisateur par son ID
-        Subject subject = this.subjectRepository.findById(id).orElse(null);
-        UserEntity user = this.userRepository.findById(userId).orElse(null);
-
-        // Vérification si le sujet ou l'utilisateur n'existent pas
-        if (subject == null || user == null) {
-            throw new ChangeSetPersister.NotFoundException();
-        }
-        // Vérification si l'utilisateur est déjà abonné au sujet
-        boolean alreadySubscribe = subject.getUsers().stream().anyMatch(o -> o.getId().equals(userId));
-
-        // Si l'utilisateur est déjà abonné, lancer une exception
-        if(alreadySubscribe) {
-            throw new BadRequestException();
-        }
-        // Ajouter l'utilisateur à la liste des abonnés du sujet
-        subject.getUsers().add(user);
-        // Sauvegarder le sujet mis à jour dans le repository
-        this.subjectRepository.save(subject);
-
-    }
 
     public SubjectDto updateSubject (Long id, SubjectDto subjectDto){
 
@@ -87,22 +56,45 @@ public class SubjectService {
 
     }
 
-    public void  unsubscribe(Long id, Long userId) throws ChangeSetPersister.NotFoundException, BadRequestException {
-        Subject subject = this.subjectRepository.findById(id).orElse(null);
-        if (subject == null) {
-            throw new ChangeSetPersister.NotFoundException();
-        }
-
-        boolean alreadySubscribe = subject.getUsers().stream().anyMatch(o -> o.getId().equals(userId));
-
-        if(!alreadySubscribe) {
-            throw new BadRequestException();
-        }
-
-        subject.setUsers(subject.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
-
-        this.subjectRepository.save(subject);
-    }
+//    public void subscribe(Long id, Long userId) throws ChangeSetPersister.NotFoundException, BadRequestException {
+//        // Récupération du sujet et d'utilisateur par son ID
+//        Subject subject = this.subjectRepository.findById(id).orElse(null);
+//        UserEntity user = this.userRepository.findById(userId).orElse(null);
+//
+//        // Vérification si le sujet ou l'utilisateur n'existent pas
+//        if (subject == null || user == null) {
+//            throw new ChangeSetPersister.NotFoundException();
+//        }
+//        // Vérification si l'utilisateur est déjà abonné au sujet
+//        boolean alreadySubscribe = subject.getUsers.stream().anyMatch(o -> o.getUser().equals(userId));
+//
+//        // Si l'utilisateur est déjà abonné, lancer une exception
+//        if(alreadySubscribe) {
+//            throw new BadRequestException();
+//        }
+//        // Ajouter l'utilisateur à la liste des abonnés du sujet
+//        subject.getUsers().add(user);
+//        // Sauvegarder le sujet mis à jour dans le repository
+//        this.subjectRepository.save(subject);
+//
+//    }
+//
+//    public void  unsubscribe(Long id, Long userId) throws ChangeSetPersister.NotFoundException, BadRequestException {
+//        Subject subject = this.subjectRepository.findById(id).orElse(null);
+//        if (subject == null) {
+//            throw new ChangeSetPersister.NotFoundException();
+//        }
+//
+//        boolean alreadySubscribe = subject.getUsers().stream().anyMatch(o -> o.getEmail().equals(userId));
+//
+//        if (!alreadySubscribe) {
+//            throw new BadRequestException();
+//        }
+//
+//        subject.setUsers(subject.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
+//
+//        this.subjectRepository.save(subject);
+//    }
 
 
 }

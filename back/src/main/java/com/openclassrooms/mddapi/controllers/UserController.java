@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.controllers;
 
-import com.openclassrooms.mddapi.model.dtos.SubjectDto;
+//import com.openclassrooms.mddapi.model.dtos.SubjectDto;
 import com.openclassrooms.mddapi.model.dtos.UserDto;
 import com.openclassrooms.mddapi.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
    private UserService userService;
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id){
         try {
             UserDto userDto = userService.getUser(id);
@@ -26,7 +26,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/user/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") String id, @Valid @RequestBody UserDto userDto){
         UserDto updatedUserEntity = userService.updateUser(Long.valueOf(id), userDto);
         return ResponseEntity.ok(updatedUserEntity);
