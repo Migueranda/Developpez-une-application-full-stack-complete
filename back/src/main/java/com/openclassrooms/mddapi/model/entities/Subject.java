@@ -31,7 +31,10 @@ public class Subject {
     @Column(name = "description")
     private String description;
 
+    @Temporal(TemporalType.DATE)
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+    private Date date;
+
     @ManyToMany(mappedBy = "subjects")
     private Set<UserEntity> users;
-
 }
