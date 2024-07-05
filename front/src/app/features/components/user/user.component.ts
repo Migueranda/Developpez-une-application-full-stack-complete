@@ -8,20 +8,16 @@ import { UserService } from './service/user.sevice';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
- user: User | undefined; ;
+//  users: User | undefined; 
+
+users: User[] = [];
+ 
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-
-
-    this.userService.getUserById(1).subscribe({
-      next: (userData) => {
-        this.user = userData;
-      },
-      error: (error) => {
-        console.error('Error fetching user data', error);
-      }
+    this.userService.getUsers().subscribe(data => {
+      this.users = data;
     });
   }
   
