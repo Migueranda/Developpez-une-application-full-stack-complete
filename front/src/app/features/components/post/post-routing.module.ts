@@ -1,0 +1,20 @@
+import { RouterModule, Routes } from "@angular/router";
+// import { PostComponent } from "./components/post/post.component";
+import { NgModule } from "@angular/core";
+import { FormComponent } from "./form/form.component";
+import { PostComponent } from "./list/post.component";
+import { DetailComponent } from "./detail/detail.component";
+
+const routes : Routes = [
+    
+    { path:'post', title: 'Post', component: PostComponent, },
+    { path: 'create', title: 'Post - create', component: FormComponent },
+    { path: 'post/:id', title: 'Post - detail', component: DetailComponent },
+]
+
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+})
+
+export class PostRoutingModule {}
