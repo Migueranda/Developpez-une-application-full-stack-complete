@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Comment } from '../interface/comment.model'; 
+import { Comment, CreateComment } from '../interface/comment.model'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
+
+  private pathService = '/api';
   constructor(private httpClient: HttpClient) {}
+
+  getCommentsByPostId(postId: number): Observable<Comment[]> {
+    return this.httpClient.get<Comment[]>(`${this.pathService}/post/${postId}/comment`);
+  }
+
+  addComment(postId: number, comment: CreateComment): Observable<Comment> {
+    return this.httpClient.post<Comment>(`${this.pathService}/post/${postId}/comment`, comment);
+  }
   
-  addComment(postId: number, commentData: { description: string }): Observable<Comment> {
-    // ID utilisateur en dur pour le test
-    const userId = 1; // Remplacez 1 par un ID valide qui existe dans votre base de données
-
-    const data = {
-        ...commentData,
-        userId: userId
-    };
-    return this.httpClient.post<Comment>(`/api/post/${postId}/comment`, data);
-}
-
 }

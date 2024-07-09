@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div class="login-container">
+    <h2>Login</h2>
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="pat@example.com" required />
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">You must enter a value</mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Not a valid email</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required />
+        <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">You must enter a value</mat-error>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Password must be at least 8 characters long</mat-error>
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit">Login</button>
+    </form>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</div>
+  

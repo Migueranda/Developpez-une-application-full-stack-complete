@@ -1,10 +1,16 @@
-// src/app/models/comment.model.ts
+
 export interface Comment {
-    id: number;
+    id?: number;
     description: string;
-    date: Date;
+    date?: Date;
     userId: number;
     username: string;
   }
-  
+
+  export interface CreateComment {
+    postId: number;
+    userId: number;
+    description: string;
+    
+  }
   

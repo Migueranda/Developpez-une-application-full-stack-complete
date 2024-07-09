@@ -14,7 +14,7 @@ export class PostService {
   getPosts(): Observable<Post[]> {
 
     return this.httpClient.get<{post: Post[]}>(this.pathService).pipe(
-        map((response: { post: any; }) => response.post) // Extraire le tableau de sujets
+        map((response: { post: any; }) => response.post) 
     );
   }
 

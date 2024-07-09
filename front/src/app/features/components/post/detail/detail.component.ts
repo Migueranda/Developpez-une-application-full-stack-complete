@@ -6,6 +6,11 @@ import { SubjectService } from '../../subject/service/subject.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Post } from '../interface/post.model';
 import { CommentService } from '../service/comment.service';
+import { UserService } from '../../user/service/user.sevice'; 
+import { Comment, CreateComment } from '../interface/comment.model';
+import { AuthService } from 'src/app/features/auth/auth.service'; 
+import { forkJoin, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-detail',
@@ -13,14 +18,14 @@ import { CommentService } from '../service/comment.service';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
-
-   posts: Post | undefined;
-   public commentForm: FormGroup ;
-   public subjects$ = this.subjectService.getSubjects();
-   subejctMap = new Map<number, string>();
-   comments: Comment[] = [];
-  
-  private postId: string | null = null;
+  posts: Post | undefined;
+  public commentForm: FormGroup;
+  public subjects$ = this.subjectService.getSubjects();
+  subjectMap = new Map<number, string>();
+  comments: any[] = [];
+  user: any;
+  userMap = new Map<number, string>(); 
+  private postId: number | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,68 +33,96 @@ export class DetailComponent implements OnInit {
     private postService: PostService,
     private subjectService: SubjectService,
     private commentService: CommentService,
+    private userService: UserService,
     private matSnackBar: MatSnackBar,
-    private router: Router
-
-  ) { 
+    public router: Router,
+    private authService: AuthService
+  ) {
     this.commentForm = this.fb.group({
-      description: ['', Validators.required] 
+      description: ['', Validators.required]
     });
   }
 
-  ngOnInit(): void {        
-     const id = this.route.snapshot.paramMap.get('id')!
+  ngOnInit(): void {
+    this.user = this.authService.userValue; 
+    const postIdParam = this.route.snapshot.paramMap.get('id');
 
-     if (id) {
-      this.postService.getPostById(+id).subscribe(post => {
+    if (postIdParam !== null) {
+      this.postId = +postIdParam; 
+      this.postService.getPostById(this.postId).subscribe(post => {
         this.posts = post;
-        this.loadSubject(post.themeId);  
-        
+        this.loadSubject(post.themeId);
+        this.loadComments(this.postId!); 
       });
     }
     this.loadSubjects();
-
-    //  if (id) {
-    //   const postId = +id; // Convertit la chaîne en nombre
-    //   this.postService.getPostById(postId)
-    //       .subscribe((post: Post) => this.posts = post);
-    // } else {
-    //     console.error('Invalid ID'); // Gérer le cas où l'ID n'est pas disponible
-    // }
-  
   }
 
-  
   loadSubjects(): void {
     this.subjectService.getSubjects().subscribe(themes => {
       themes.forEach(theme => {
-        this.subejctMap.set(theme.id, theme.title);
+        this.subjectMap.set(theme.id, theme.title);
       });
     });
   }
 
   loadSubject(themeId: number): void {
-    const themeTitle = this.subejctMap.get(themeId) || 'Thème inconnu';
-    console.log('Le thème associé:', themeTitle); 
+    const themeTitle = this.subjectMap.get(themeId) || 'Thème inconnu';
+    console.log('Le thème associé:', themeTitle);
+  }
+
+  loadComments(postId: number): void {
+    this.commentService.getCommentsByPostId(postId).subscribe(comments => {
+      const userObservables = comments.map(comment => {
+        if (this.userMap.has(comment.userId)) {
+          return of(this.userMap.get(comment.userId)); 
+        } else {
+          return this.userService.getUserById(comment.userId).pipe(
+            switchMap(user => {
+              console.log(`Ajout de l'utilisateur ${user.userName} dans le cache pour userId ${comment.userId}`);
+              this.userMap.set(comment.userId, user.userName);
+              return of(user.userName);
+            })
+          );
+        }
+      });
+
+      forkJoin(userObservables).subscribe(usernames => {
+        console.log('Commentaires chargés :', comments);
+        console.log('Noms des utilisateurs :', usernames);
+        this.comments = comments.map((comment, index) => ({
+          ...comment,
+          username: usernames[index]
+        }));
+      });
+    });
+  }
+
+  getUsername(userId: number): string {
+    const username = this.userMap.get(userId);
+    console.log(`Récupération du nom d'utilisateur pour userId ${userId}: ${username}`);
+    return username || 'Utilisateur inconnu';
   }
 
   onSubmit(): void {
-    if(this.commentForm?.valid && this.posts?.id){
-      this.commentService.addComment(this.posts.id, this.commentForm.value).subscribe({
+    if (this.commentForm?.valid && this.posts?.id && this.user) {
+      const commentData: CreateComment = {
+        postId: this.posts.id,
+        userId: this.user.id,
+        description: this.commentForm.value.description
+      };
+      this.commentService.addComment(this.posts.id, commentData).subscribe({
         next: (comment) => {
           this.matSnackBar.open('Commentaire ajouté avec succès', 'Fermer', { duration: 3000 });
           this.commentForm?.reset();
-          // Optionnel : recharger les commentaires ou mettre à jour l'affichage
+          if (this.posts?.id) {
+            this.loadComments(this.posts.id); 
+          }
         },
         error: () => {
-          this.matSnackBar.open('Commentaire ajouté avec succès', 'Fermer',{ duration: 3000 });
+          this.matSnackBar.open('Échec de l\'ajout du commentaire', 'Fermer', { duration: 3000 });
         }
-
       });
     }
   }
-
 }
-// this.postService
-    //   .getPostById(id)
-    //   .subscribe((post: Post) => this.post = post);

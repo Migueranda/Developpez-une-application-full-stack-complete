@@ -1,23 +1,10 @@
 import { RouterModule, Routes } from "@angular/router";
-import { SubjectComponent } from "./components/subject/subject.component";
+import { SubjectComponent } from "../list/subject.component"; 
 import { NgModule } from "@angular/core";
+import { AuthGuard } from "src/app/guards/auth.guards";
 
 const routes : Routes = [
-    {
-        path:'subject',
-        title: 'Subject',
-        component: SubjectComponent,
-       // canActivate: [AuthGuard], // Garde d'authentification pour protéger la route
-        data: { 
-            title: 'Subject Page' 
-        }
-    },
-
-    {
-        path: '', 
-        redirectTo: '/subject', 
-        pathMatch: 'full' // Redirection par défaut
-    },
+    { path:'subject',title: 'Subject', component: SubjectComponent, canActivate: [AuthGuard]},
 ]
 
 @NgModule({

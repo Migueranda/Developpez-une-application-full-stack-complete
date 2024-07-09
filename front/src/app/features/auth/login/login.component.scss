@@ -1,0 +1,44 @@
+.login-container {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  
+    h2 {
+      margin-bottom: 20px;
+    }
+  
+    mat-form-field {
+      width: 100%;
+      margin-bottom: 20px;
+  
+    //   input {
+    //     padding: 10px;
+    //     border: 1px solid #000;
+    //     border-radius: 5px;
+    //   }
+  
+      mat-label {
+        font-weight: bold;
+      }
+    }
+  
+    .mat-raised-button {
+      background-color: #7e57c2;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+  
+      &:hover {
+        background-color: #6a45a1;
+      }
+    }
+  
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+  }
+  

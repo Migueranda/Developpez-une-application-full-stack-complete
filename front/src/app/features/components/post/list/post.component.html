@@ -12,13 +12,7 @@
         <mat-card-content>
         {{post.description}}
         </mat-card-content>
+        <h2>Bienvenue, {{ user?.username }}</h2>
+        <p>Email: {{ user?.email }}</p>
     </mat-card>
 </mat-card-content>
-<!-- <ul>
-    <li *ngFor="let post of posts">
-        <strong>{{ post.title }}</strong> - {{ post.description }} - {{post.title}}
-    </li>     
-</ul> -->
-
-
-<!-- [routerLink]="['/post']" -->

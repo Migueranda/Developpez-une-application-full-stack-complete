@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from '../interface/subject.model';
 import { SubjectService } from '../service/subject.service';
-// import { SubjectService } from '../../service/subject.service';
-// import { Subject, User } from './interfaces/subject.model';
 
 @Component({
   selector: 'app-subject',

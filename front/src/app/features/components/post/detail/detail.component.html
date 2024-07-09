@@ -1,110 +1,26 @@
-<!-- <mat-card-content class="cards-content">
-    <mat-card *ngIf="posts" class="card">
-        <mat-card-title-group>
-        <mat-card-title>{{posts.title}}</mat-card-title>
-        <mat-card-subtitle>{{posts.date}}</mat-card-subtitle>
-        <mat-option *ngFor="let theme of subjects$ | async" [value]="theme.id">
-            {{ theme.title }}
-          </mat-option>    
-        <mat-card-subtitle>{{posts.userId}}</mat-card-subtitle>
-        </mat-card-title-group>
-        <mat-card-content>
-        {{posts.description}}
-        </mat-card-content>
-    </mat-card>
-</mat-card-content> -->
 
-<!-- V2 -->
-
-<!-- <app-header></app-header>
-<div *ngIf="posts" class="card">
-    <div fxLayout="row" fxLayoutAlign="start center">
-        <button mat-icon-button>
-        <mat-icon  routerLink="/post">arrow_back</mat-icon>
-        </button> 
-        <div>
-         <mat-card-title>{{ posts.title }}</mat-card-title> 
-        </div>                   
-    </div> 
-    <div class="comment-content">
-        <mat-card-content class="cards-content">    
-            <mat-card >        
-                <mat-card-title-group>    
-                    <mat-card-subtitle>{{ posts.date | date:'medium' }}</mat-card-subtitle>
-                    <mat-card-subtitle>{{ subejctMap.get(posts.themeId) || 'Thème inconnu' }}</mat-card-subtitle>
-                    <mat-card-subtitle>{{ posts.userId }}</mat-card-subtitle>
-                </mat-card-title-group>
-                <mat-card-content>
-                    {{ posts.description }}
-                </mat-card-content>
-            </mat-card>       
-        </mat-card-content>
-        <h2>Commentaires</h2>
-        
-       
-        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-          <textarea formControlName="description" placeholder="Écrivez ici votre commentaire"></textarea>
-          <button type="submit" [disabled]="!commentForm.valid">Envoyer</button>
-        </form>
-
-    </div>
-<div> -->
-
-   <!-- <mat-form-field [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-            <mat-label>Textarea</mat-label>
-            <textarea matInput formControlName="description" placeholder="Écrivez ici votre commentaire"></textarea>
-        </mat-form-field>
-        <button type="submit" [disabled]="!commentForm.valid">
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="send"></mat-icon>
-        </button> -->
-
-
-
-        <app-header></app-header>
-<div *ngIf="posts" class="card">
-    <div fxLayout="row" fxLayoutAlign="start center">
-        <button mat-icon-button>
-            <mat-icon routerLink="/post">arrow_back</mat-icon>
-        </button> 
-        <div>
-            <mat-card-title>{{ posts.title }}</mat-card-title> 
-        </div>                   
-    </div> 
-    <div class="comment-content">
-        <mat-card-content class="cards-content">    
-            <mat-card >        
-                <mat-card-title-group>    
-                    <mat-card-subtitle>{{ posts.date | date:'medium' }}</mat-card-subtitle>
-                    <mat-card-subtitle>{{ subejctMap.get(posts.themeId) || 'Thème inconnu' }}</mat-card-subtitle>
-                    <mat-card-subtitle>{{ posts.userId }}</mat-card-subtitle>
-                </mat-card-title-group>
-                <mat-card-content>
-                    {{ posts.description }}
-                </mat-card-content>
-            </mat-card>       
-        </mat-card-content>    
-        <!-- Formulaire de commentaire -->
-        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="comment-form">
-            <mat-form-field class="full-width">
-                <textarea matInput formControlName="description" placeholder="Écrivez ici votre commentaire"></textarea>
-            </mat-form-field>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!commentForm.valid">Envoyer</button>
-        </form>
-
-    </div>
-</div>
-
-
-<!-- <h2>Commentaires</h2>
-<div *ngFor="let comment of comments" class="comment-item">
-    <mat-card>
-        <mat-card-header>
-            <div mat-card-avatar class="comment-avatar"></div>
-            <mat-card-title>{{ comment.username }}</mat-card-title>
-            <mat-card-subtitle>{{ comment.date | date:'medium' }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            {{ comment.description }}
-        </mat-card-content>
-    </mat-card>
-</div> -->
+<div>
+    <button mat-button (click)="router.navigate(['/post'])">Retour</button>
+    <h2>{{ posts?.title }}</h2>
+    <p>Date: {{ posts?.date }}</p>
+    <p>Auteur: {{ posts?.userId }}</p>
+    <p>Thème: {{ subjectMap.get(posts?.themeId || 0) }}</p>
+    <p>Content: {{ posts?.description }}</p>
+  
+    <h3>Commentaires</h3>
+  <div *ngFor="let comment of comments">
+    <p><strong>{{ getUsername(comment.userId) }}</strong></p>
+    <p>{{ comment.description }}</p>
+  </div>
+  
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Écrivez ici votre commentaire</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+      <button mat-icon-button color="primary" type="submit" aria-label="Envoyer">
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
+  </div>
+  

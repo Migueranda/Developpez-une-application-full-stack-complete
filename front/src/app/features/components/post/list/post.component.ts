@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from '../interface/post.model';
 import { PostService } from '../service/post.service';
 import { Router } from '@angular/router';
-// import { Post } from './interface/post.model';
-// import { PostService } from './service/post.service';
+import { UserService } from '../../user/service/user.sevice';
+
 
 @Component({
   selector: 'app-post',
@@ -11,14 +11,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./post.component.scss']
 })
 export class PostComponent implements OnInit {
-
+  user: any;
   posts : Post[] =[];
 
-  constructor(private postService : PostService, private router: Router){}
+  constructor(private postService : PostService, private router: Router, private userService: UserService){}
 
 
   ngOnInit(): void {
     this.loadPosts();
+    this.user = this.userService.getUser();
   }
 
   loadPosts():void{

@@ -6,6 +6,7 @@ import { PostService } from '../service/post.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Post } from '../interface/post.model';
 import { SubjectService } from '../../subject/service/subject.service';
+import { AuthService } from 'src/app/features/auth/auth.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class FormComponent implements OnInit {
   public subjects$ = this.subjectService.getSubjects();
   private postId: string | null = null;
   public onUpdate: boolean = false;
+  private userId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,10 +29,14 @@ export class FormComponent implements OnInit {
     private matSnackBar: MatSnackBar,
     private postService: PostService,
     private subjectService: SubjectService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    const user = this.authService.userValue;
+    this.userId = user?.id || null;
+
     this.postId = this.route.snapshot.paramMap.get('id');
 
     if (this.postId) {
@@ -60,7 +66,8 @@ export class FormComponent implements OnInit {
           Validators.maxLength(2000)
         ]
       ],
-      userId: ['1', [Validators.required]] 
+      userId: [this.userId, [Validators.required]]
+      // userId: ['1', [Validators.required]] 
     });
   }
 
