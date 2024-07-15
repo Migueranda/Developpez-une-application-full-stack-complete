@@ -1,18 +1,19 @@
 <app-header></app-header>
 <div class="button-row">
-    <button mat-raised-button color="primary" routerLink="/create">Créer un article</button>
+    <button mat-raised-button class="button-create-article" color="primary" routerLink="/create">Créer un article</button>
+    <div (click)="toggleSortByDate()"><span class="trier-par">Trier par</span> <mat-icon class="arrow-down" svgIcon="arrow-down"></mat-icon></div>
+    
+    
 </div>
 <mat-card-content class="cards-content">
     <mat-card class="card" *ngFor="let post of posts" (click)="navigateToPost(post.id)">
-        <mat-card-title-group>
         <mat-card-title>{{post.title}}</mat-card-title>
-        <mat-card-subtitle>{{post.date}}</mat-card-subtitle>
-        <mat-card-subtitle>{{post.userId}}</mat-card-subtitle>
-        </mat-card-title-group>
+        <div class="date-username">           
+            <mat-card-subtitle>{{post.date}}</mat-card-subtitle>
+            <mat-card-subtitle>{{userNames[post.userId]}}</mat-card-subtitle>
+        </div>
         <mat-card-content>
-        {{post.description}}
+            {{post.description}}
         </mat-card-content>
-        <h2>Bienvenue, {{ user?.username }}</h2>
-        <p>Email: {{ user?.email }}</p>
     </mat-card>
 </mat-card-content>

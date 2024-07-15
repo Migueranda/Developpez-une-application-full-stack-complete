@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from './interface/user.model';
-import { UserService } from './service/user.sevice';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../auth/auth.service';
+import { UserService } from './service/user.sevice';
+import { SubjectService } from '../subject/service/subject.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from './interface/user.model'; 
 
 @Component({
   selector: 'app-user',
@@ -12,19 +12,17 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-
   profileForm: FormGroup;
-  // users: User[] = [];
   user: any;
-  
+  subscriptions: Subject[] = [];
 
   constructor(
-    private userService: UserService,
-    private authService: AuthService,
-    private router: Router,
     private fb: FormBuilder,
+    private authService: AuthService,
+    private userService: UserService,
+    private subjectService: SubjectService,
     private snackBar: MatSnackBar
-  ) { 
+  ) {
     this.profileForm = this.fb.group({
       userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -33,34 +31,61 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.userService.getUser().subscribe((data: User[]) => {
-    //   this.users = data;
-    // });
-
     this.user = this.authService.userValue;
-    this.profileForm?.patchValue({
-      userName: this.user.userName,
-      email: this.user.email
-    })
-  }
-  onSubmit(): void{
-    if(this.profileForm?.valid){
-      this.userService.updateUser(this.user.id, this.profileForm.value).subscribe({
-          next: (response) => {
-            this.snackBar.open('Profil mis à jour avec succès', 'Fermer', {
-              duration: 3000,
-            });
-          },
-          error: (error) => {
-            this.snackBar.open('Erreur lors de la mise à jour du profil', 'Fermer', {
-              duration: 3000,
-            });
-          }
-      })
+    if (this.user) {
+      this.profileForm.patchValue({
+        userName: this.user.userName,
+        email: this.user.email
+      });
+      this.loadSubscriptions();
     }
   }
+
+  loadSubscriptions(): void {
+    if (this.user) {
+      this.userService.getUserById(this.user.id).subscribe(user => {
+        this.subscriptions = user.subscription;
+      });
+    }
+  }
+
+  onSubmit(): void {
+    if (this.profileForm.valid) {
+      this.userService.updateUser(this.user.id, this.profileForm.value).subscribe({
+        next: (response) => {
+          this.snackBar.open('Profil mis à jour avec succès', 'Fermer', {
+            duration: 3000,
+          });
+        },
+        error: (error) => {
+          this.snackBar.open('Erreur lors de la mise à jour du profil', 'Fermer', {
+            duration: 3000,
+          });
+        }
+      });
+    }
+  }
+
   onLogout(): void {
     this.authService.logout();
   }
 
+  unsubscribe(subjectId: number): void {
+    if (this.user) {
+      this.subjectService.unsubscribeFromSubject(this.user.id, subjectId).subscribe({
+        next: () => {
+          this.snackBar.open('Désabonné avec succès', 'Fermer', {
+            duration: 3000
+          });
+          this.loadSubscriptions();
+        },
+        error: (error) => {
+          console.error('Erreur lors de la désouscription', error);
+          this.snackBar.open('Erreur lors de la désouscription', 'Fermer', {
+            duration: 3000
+          });
+        }
+      });
+    }
+  }
 }

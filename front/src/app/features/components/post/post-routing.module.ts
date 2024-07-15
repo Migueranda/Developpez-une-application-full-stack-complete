@@ -11,6 +11,7 @@ const routes : Routes = [
     { path:'post', title: 'Post', component: PostComponent, canActivate: [AuthGuard] },
     { path: 'create', title: 'Post - create', component: FormComponent },
     { path: 'post/:id', title: 'Post - detail', component: DetailComponent },
+    { path: '', redirectTo: '/post', pathMatch: 'full' }
 ]
 
 @NgModule({

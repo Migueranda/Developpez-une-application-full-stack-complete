@@ -6,16 +6,19 @@ import { SubjectService } from '../../subject/service/subject.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Post } from '../interface/post.model';
 import { CommentService } from '../service/comment.service';
-import { UserService } from '../../user/service/user.sevice'; 
+import { UserService } from '../../user/service/user.sevice';
 import { Comment, CreateComment } from '../interface/comment.model';
 import { AuthService } from 'src/app/features/auth/auth.service'; 
 import { forkJoin, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss']
+  styleUrls: ['./detail.component.scss'],
+  providers: [DatePipe]
 })
 export class DetailComponent implements OnInit {
   posts: Post | undefined;
@@ -36,7 +39,8 @@ export class DetailComponent implements OnInit {
     private userService: UserService,
     private matSnackBar: MatSnackBar,
     public router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private datePipe: DatePipe
   ) {
     this.commentForm = this.fb.group({
       description: ['', Validators.required]
@@ -49,10 +53,17 @@ export class DetailComponent implements OnInit {
 
     if (postIdParam !== null) {
       this.postId = +postIdParam; 
-      this.postService.getPostById(this.postId).subscribe(post => {
-        this.posts = post;
-        this.loadSubject(post.themeId);
-        this.loadComments(this.postId!); 
+      this.postService.getPostById(this.postId).pipe(
+        switchMap(post => {
+          this.posts = post;
+          this.loadSubject(post.themeId);
+          return this.userService.getUserById(post.userId);
+        })
+      ).subscribe(user => {
+        if (user) {
+          this.userMap.set(user.id, user.userName);
+          this.loadComments(this.postId!); 
+        }
       });
     }
     this.loadSubjects();
@@ -79,9 +90,13 @@ export class DetailComponent implements OnInit {
         } else {
           return this.userService.getUserById(comment.userId).pipe(
             switchMap(user => {
-              console.log(`Ajout de l'utilisateur ${user.userName} dans le cache pour userId ${comment.userId}`);
-              this.userMap.set(comment.userId, user.userName);
-              return of(user.userName);
+              if (user && user.userName) {
+                console.log(`Ajout de l'utilisateur ${user.userName} dans le cache pour userId ${comment.userId}`);
+                this.userMap.set(comment.userId, user.userName);
+                return of(user.userName);
+              } else {
+                return of('Utilisateur inconnu');
+              }
             })
           );
         }

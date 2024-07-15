@@ -1,36 +1,31 @@
 .login-container {
     max-width: 300px;
     margin: 0 auto;
-    padding: 20px;
+    margin-bottom: 20px;
     text-align: center;
   
     h2 {
       margin-bottom: 20px;
     }
-  
+
     mat-form-field {
       width: 100%;
       margin-bottom: 20px;
-  
-    //   input {
-    //     padding: 10px;
-    //     border: 1px solid #000;
-    //     border-radius: 5px;
-    //   }
-  
       mat-label {
         font-weight: bold;
       }
     }
-  
+    .input-text{
+      margin-bottom: 0px;
+      text-align: initial;
+
+    }
     .mat-raised-button {
       background-color: #7e57c2;
       color: #fff;
-      padding: 10px 20px;
       border-radius: 5px;
       font-size: 16px;
-      font-weight: bold;
-  
+     
       &:hover {
         background-color: #6a45a1;
       }
@@ -41,4 +36,61 @@
       margin-top: 10px;
     }
   }
+
+
+
+  .header-toolbar {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    background-color: white;
+    border-bottom: solid 1px black;
+    margin-bottom: 20px;
+  }
   
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }  
+  
+  .logo {
+
+    height: 81px;
+ }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  .login-title, .mat-raised-button{
+  font-weight: 400;
+  font-size: 24px;
+  
+  }
+
+.login-title{
+  margin-bottom: 40px;
+}
+
+
+.custom-icon {
+  width: 48px;
+  height: 48px; 
+  color: black; 
+  font-weight: 100 !important;
+ 
+}
+
+.custom-icon .mat-icon svg {
+  width: inherit;
+  height: inherit;
+  font-weight: inherit;
+}
+
+.custom-icon .mat-icon svg path {
+  fill: currentColor; 
+}
+.arrow-button{
+  margin-left: 2%;
+}
+//-----------------------------------

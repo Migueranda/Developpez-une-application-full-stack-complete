@@ -1,19 +1,19 @@
-
-<app-header></app-header>     
-
-<mat-card-title>
-  <div fxLayout="row" fxLayoutAlign="start center">
-    <button mat-icon-button routerLink="/post">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-  </div>
-</mat-card-title>
+<app-header></app-header> 
 <mat-card-content *ngIf="postForm">
+<!-- <mat-card-title> -->
+  <button mat-icon-button class="arrow-button">
+    <mat-icon svgIcon="arrow_back" class="custom-icon" aria-hidden="false" aria-label="SVG icon arrow_back"  routerLink="/post"></mat-icon>
+  </button>
+  <!-- <div fxLayout="row" fxLayoutAlign="start center">
+  
+  </div> -->
+<!-- </mat-card-title> -->
+
   <form class="form-article" [formGroup]="postForm" (ngSubmit)="onSubmit()">
-    <mat-label>Créer un nouvel article</mat-label>
+    <mat-card-title>Créer un nouvel article</mat-card-title>
     <mat-form-field>
       <mat-label>Sélectionner un thème</mat-label>
-      <mat-select ngDefaultControl formControlName="themeId">
+      <mat-select ngDefaultControl formControlName="themeId" class="input-tems-post">
         <mat-option *ngFor="let theme of subjects$ | async" [value]="theme.id">
           {{ theme.title }}
         </mat-option>
@@ -25,10 +25,10 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description"></textarea>
+      <textarea matInput formControlName="description"  class="descrption-field"></textarea>
     </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">
-      Save
+    <button mat-raised-button color="primary" type="submit" class=" button-post-create">
+      Créer
     </button>
   </form>
 </mat-card-content>

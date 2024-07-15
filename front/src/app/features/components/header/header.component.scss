@@ -1,4 +1,9 @@
 
+.header {
+  width: 100%;
+  background-color: #f8f9fa; /* Couleur de fond de l'en-tête */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 .header-toolbar {
     display: flex;
@@ -30,6 +35,12 @@
     font-weight: 400;
     font-size:20px;
   }
+
+  nav a.active-link, .icon_account_circle.active-link {
+    color: #6C5CCF;
+    font-weight: bold;
+   
+  }
   
   nav a:last-child {
     margin-right: 0;
@@ -37,5 +48,7 @@
    
   .icon_account_circle{
     color: #D9D9D9;
+    transform: scale(2);
       
   }
+  

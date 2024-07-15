@@ -1,7 +1,29 @@
+@import '../../../../../styles/styles.scss' ;
+
 .form-article {
     display: flex;
     flex-direction: column;
-    // align-items: flex-start;
     align-items: center;
+   
+    width: 80%;
+    margin: auto;
   }
+  .mat-form-field{
+   
+  //  align-content: center;
+    width: 40%;
+    margin: auto;
   
+  }
+
+  .descrption-field{
+    height: 200px;
+  }
+
+  .button-post-create{
+    width: 10%;
+  }
+
+  .mat-card-title{
+    font-weight: bold;
+  }

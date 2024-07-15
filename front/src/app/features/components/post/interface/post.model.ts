@@ -1,4 +1,5 @@
 
+
 export interface Post {
     id: number;
     title: string;
@@ -12,7 +13,7 @@ export interface Post {
  
   export interface User {
     id: number;
-    username: string;
+    userName?: string;
    
   }
   

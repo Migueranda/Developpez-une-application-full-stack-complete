@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,7 +8,7 @@ import { HomeComponent } from './pages/home/home.component';
 // import { SubjectComponent } from './features/components/subject/subject.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { HeaderComponent } from './features/components/header/header.component';
 // import { PostComponent } from './features/components/post/post.component';
@@ -66,4 +66,16 @@ const materialModule = [
   
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'arrow_back',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/arrow_back.svg')
+    );
+
+    iconRegistry.addSvgIcon(
+      'arrow-down',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/arrow-down.svg')
+    );
+  } 
+}

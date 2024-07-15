@@ -1,26 +1,72 @@
-
+<!-- 
 <div>
-    <button mat-button (click)="router.navigate(['/post'])">Retour</button>
-    <h2>{{ posts?.title }}</h2>
-    <p>Date: {{ posts?.date }}</p>
-    <p>Auteur: {{ posts?.userId }}</p>
-    <p>Thème: {{ subjectMap.get(posts?.themeId || 0) }}</p>
-    <p>Content: {{ posts?.description }}</p>
+  <mat-card-content >
+      <button mat-button (click)="router.navigate(['/post'])">Retour</button>
+      <h2>{{ posts?.title }}</h2>
+      <p>Date: {{ posts?.date }}</p>
+      <p>Auteur: {{ posts?.userId }}</p>
+      <p>Thème: {{ subjectMap.get(posts?.themeId || 0) }}</p>
+      <p>Content: {{ posts?.description }}</p>
+    
+      <h3>Commentaires</h3>
+    <div *ngFor="let comment of comments">
+      <p><strong>{{ getUsername(comment.userId) }}</strong></p>
+      <p>{{ comment.description }}</p>
+    </div>
+    
+      <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <mat-label>Écrivez ici votre commentaire</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <button mat-icon-button color="primary" type="submit" aria-label="Envoyer">
+          <mat-icon>send</mat-icon>
+        </button>
+      </form>
+    </mat-card-content>
+  </div> -->
   
-    <h3>Commentaires</h3>
-  <div *ngFor="let comment of comments">
-    <p><strong>{{ getUsername(comment.userId) }}</strong></p>
-    <p>{{ comment.description }}</p>
-  </div>
-  
-    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <mat-label>Écrivez ici votre commentaire</mat-label>
-        <textarea matInput formControlName="description"></textarea>
-      </mat-form-field>
+
+<app-header></app-header>
+<div class="container-button-title">
+  <button mat-icon-button class="arrow-button" >
+    <mat-icon svgIcon="arrow_back" class="custom-icon" aria-hidden="false" aria-label="SVG icon arrow_back" (click)="router.navigate(['/post'])"></mat-icon>
+  </button>
+  <mat-card-title>{{ posts?.title }}</mat-card-title>
+</div>
+<mat-card-content class="cards-content">
+    <!-- <mat-card class="card" *ngFor="let post of posts" (click)="navigateToPost(post.id)"> -->
+    <div class="content-date-user-theme">
+         <div class="p-content-date-user-theme"> 
+            <p class="text-date-user-theme">{{ posts?.date }}</p>
+            <p class="text-date-user-theme" *ngIf="posts?.userId !== undefined">{{ getUsername(posts?.userId ?? 0) }}</p>
+            <p class="text-date-user-theme">{{ subjectMap.get(posts?.themeId || 0) }}</p>
+        </div>
+      <div>
+        {{posts?.description}}
+      </div>
+    </div> 
+
+    <h3 class="comment-title">Commentaires</h3>
+    <div *ngFor="let comment of comments" class="description-content-comment">
+      <div class="comment-username" >
+        {{ getUsername(comment.userId) }}
+      </div>
+     <div class="comment-description">
+      {{ comment.description }}
+     </div>
+     
+    </div>
+
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="content-comment-input-content">
+     
+        <!-- <mat-label>Écrivez ici votre commentaire</mat-label> -->
+        <textarea  class="comment-input" placeholder="Écrivez ici votre commentaire"  matInput formControlName="description" class="comment-input-content" ></textarea>
+   
       <button mat-icon-button color="primary" type="submit" aria-label="Envoyer">
-        <mat-icon>send</mat-icon>
+        <mat-icon class="send-icon">send</mat-icon>
       </button>
     </form>
-  </div>
-  
+
+</mat-card-content>
+

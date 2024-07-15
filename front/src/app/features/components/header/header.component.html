@@ -1,16 +1,16 @@
 <div class="header">
   <mat-toolbar class="header-toolbar" >
     <div class="logo-container">
-      <img src="/assets/logo_p6.png" alt="logo" class="logo" [routerLink]="['/']" />
+      <img src="/assets/logo_p6.png" alt="logo" class="logo" [routerLink]="['/'] " routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }"/>
     </div>
     <div class="spacer"></div>
     <nav>
-      <a mat-button [routerLink]="['/post']" >Articles</a>
-      <a mat-button [routerLink]="['/subject']">Thèmes</a>
+      <a mat-button [routerLink]="['/post']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Articles</a>
+      <a mat-button [routerLink]="['/subject']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Thèmes</a>
     </nav>
-    <button mat-icon-button>
-      <mat-icon class="icon_account_circle" [routerLink]="['/user']">account_circle</mat-icon>
-    </button>
+    <button mat-icon-button class="container-icon_account_circle">
+      <mat-icon class="icon_account_circle" [routerLink]="['/user']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">account_circle</mat-icon>
+        </button>
   </mat-toolbar>
 </div>
 
