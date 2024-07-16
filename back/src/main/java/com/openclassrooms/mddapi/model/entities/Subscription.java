@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "subscription")
 @IdClass(SubscriptionId.class)
 public class Subscription {
-
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -9,7 +9,10 @@ import com.openclassrooms.mddapi.repositories.SubscriptionRepository;
 import com.openclassrooms.mddapi.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SubscriptionService {
@@ -25,14 +28,27 @@ public class SubscriptionService {
 
     public void subscribeUserToSubject(Long userId, Long subjectId) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() ->
+                        new EntityNotFoundException("User not found with id: " + userId));
         Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found with id: " + subjectId));
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Subject not found with id: " + subjectId));
+
+        SubscriptionId subscriptionId = new SubscriptionId(userId, subjectId);
+        Optional<Subscription> existingSubscription = subscriptionRepository.findById(subscriptionId);
+        if (existingSubscription.isPresent()) {
+            throw new IllegalStateException("Subscription already exists for given user and subject");
+        }
 
         Subscription subscription = new Subscription();
         subscription.setUser(user);
         subscription.setSubject(subject);
-        subscriptionRepository.save(subscription);
+
+        try {
+            subscriptionRepository.save(subscription);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException("Failed to create subscription due to data integrity violation", e);
+        }
     }
 
     public void unsubscribeUserFromSubject(Long userId, Long subjectId) {

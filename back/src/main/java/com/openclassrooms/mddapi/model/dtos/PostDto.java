@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.model.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.openclassrooms.mddapi.model.entities.PostEntity;
 
@@ -22,6 +23,7 @@ public class PostDto {
     private String description;
     private Long themeId;
     private Integer userId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Timestamp date;
     private Timestamp createdAt;
     private Timestamp updatedAt;

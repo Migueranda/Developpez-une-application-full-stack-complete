@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.model;
 
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 @Setter
 @Getter
+//@Embeddable
 public class SubscriptionId implements Serializable {
     private Long user; // Correspond au type de l'ID de UserEntity
     private Long subject; // Correspond au type de l'ID de Subject
