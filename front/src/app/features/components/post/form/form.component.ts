@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../service/post.service';
-// import { SubjectService } from 'src/app/features/service/subject.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Post } from '../interface/post.model';
 import { SubjectService } from '../../subject/service/subject.service';
@@ -67,7 +66,6 @@ export class FormComponent implements OnInit {
         ]
       ],
       userId: [this.userId, [Validators.required]]
-      // userId: ['1', [Validators.required]] 
     });
   }
 

@@ -9,11 +9,8 @@
     margin: auto;
   }
   .mat-form-field{
-   
-  //  align-content: center;
     width: 40%;
     margin: auto;
-  
   }
 
   .descrption-field{
@@ -26,4 +23,24 @@
 
   .mat-card-title{
     font-weight: bold;
+  }
+
+  @media (max-width: 600px) {
+    .custom-icon{
+      width: 32px;
+      height: 32px; 
+
+    }
+    .mat-card-title{
+      font-size: 16px;
+    }
+
+    .mat-form-field {
+      width: 80%;
+    }
+
+    .button-post-create{
+    width: 50%;
+    }
+
   }

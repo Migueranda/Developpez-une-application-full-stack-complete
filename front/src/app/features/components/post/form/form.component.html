@@ -1,14 +1,9 @@
 <app-header></app-header> 
-<mat-card-content *ngIf="postForm">
-<!-- <mat-card-title> -->
-  <button mat-icon-button class="arrow-button">
-    <mat-icon svgIcon="arrow_back" class="custom-icon" aria-hidden="false" aria-label="SVG icon arrow_back"  routerLink="/post"></mat-icon>
-  </button>
-  <!-- <div fxLayout="row" fxLayoutAlign="start center">
-  
-  </div> -->
-<!-- </mat-card-title> -->
 
+<mat-card-content *ngIf="postForm">  
+    <button mat-icon-button class="arrow-button">
+      <mat-icon svgIcon="arrow_back" class="custom-icon" aria-hidden="false" aria-label="SVG icon arrow_back"  routerLink="/post"></mat-icon>
+    </button>
   <form class="form-article" [formGroup]="postForm" (ngSubmit)="onSubmit()">
     <mat-card-title>Créer un nouvel article</mat-card-title>
     <mat-form-field>
@@ -33,7 +28,5 @@
   </form>
 </mat-card-content>
 
-
-<!-- [disabled]="postForm.invalid" -->
 
        

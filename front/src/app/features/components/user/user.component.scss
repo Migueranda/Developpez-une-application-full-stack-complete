@@ -32,11 +32,7 @@
     display: flex;
     justify-content: space-around;
     width: 100%;
-    // align-items: center;
     margin: auto;
-  
-    // flex-direction: row;
-   
 }
 
 .subscriptions > h4{
@@ -66,5 +62,33 @@
 }
 .button-user-unsubscribe{
     margin-top: 20px;
-    // align-self: center;
+}
+
+@media (max-width: 600px) {
+.user-form {
+  
+    width: 80%; 
+    
+}
+
+.button-user-save[_ngcontent-xih-c133] {
+    align-self: center;
+}
+
+.button-user-save, .button-user-logout{
+    width: 50%;
+    
+}
+
+.container-user-subscriptions {
+    flex-wrap: wrap;
+}
+
+.content-user-suncriptions {
+    width: 80%;
+}
+
+.button-user-unsubscribe{
+     width: 50%; 
+}
 }

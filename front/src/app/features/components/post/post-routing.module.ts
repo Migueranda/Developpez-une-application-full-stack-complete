@@ -1,5 +1,4 @@
 import { RouterModule, Routes } from "@angular/router";
-// import { PostComponent } from "./components/post/post.component";
 import { NgModule } from "@angular/core";
 import { FormComponent } from "./form/form.component";
 import { PostComponent } from "./list/post.component";

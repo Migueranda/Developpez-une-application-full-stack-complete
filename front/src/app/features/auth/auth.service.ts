@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { User } from '../components/subject/interface/subject.model'; 
 import { Router } from '@angular/router';
 @Injectable({
@@ -25,7 +25,11 @@ export class AuthService {
   }
 
   register(user: User): Observable<User> {
-    return this.httpClient.post<User>(`${this.pathService}/register`, user);
+    return this.httpClient.post<User>(`${this.pathService}/register`, user).pipe(
+     catchError(error =>{
+      return throwError(error.error || 'Server error');
+     })
+    );
   }
 
   login(credentials: { email: string, password: string }): Observable<User> {

@@ -31,6 +31,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { AuthService } from './features/auth/auth.service';
 import { LoginRoutingModule } from './features/auth/auth-routing.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 const materialModule = [
@@ -60,6 +61,12 @@ const materialModule = [
     MatInputModule,   
     MatSelectModule,
     LoginRoutingModule,
+    FlexLayoutModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
+   
     ...materialModule
   ],
   providers: [{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}, AuthService],

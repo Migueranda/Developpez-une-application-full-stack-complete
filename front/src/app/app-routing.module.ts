@@ -6,15 +6,11 @@ import { SubjectComponent } from './features/components/subject/list/subject.com
 import { PostComponent } from './features/components/post/list/post.component';
 import { AuthGuard } from './guards/auth.guards';
 import { UserComponent } from './features/components/user/user.component';
-// import { SubjectComponent } from './features/components/subject/subject.component';
-// import { PostComponent } from './features/components/post/post.component';
 
 
-// consider a guard combined with canLoad / canActivate route option
-// to manage unauthenticated user to access private routes
 const routes: Routes = [
   { 
-    path: '', component: HomeComponent, 
+    path: 'home', component: HomeComponent, 
   },
   {
     path: 'subject', component : SubjectComponent, canActivate: [AuthGuard]

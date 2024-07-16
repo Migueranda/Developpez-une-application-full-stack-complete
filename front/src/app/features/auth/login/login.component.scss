@@ -37,8 +37,6 @@
     }
   }
 
-
-
   .header-toolbar {
     display: flex;
     justify-content: space-between;
@@ -72,13 +70,11 @@
   margin-bottom: 40px;
 }
 
-
 .custom-icon {
   width: 48px;
   height: 48px; 
   color: black; 
   font-weight: 100 !important;
- 
 }
 
 .custom-icon .mat-icon svg {
@@ -93,4 +89,23 @@
 .arrow-button{
   margin-left: 2%;
 }
-//-----------------------------------
+
+
+@media (max-width: 600px) {
+  .container-respon{
+   display: flex;
+   flex-direction: column-reverse;
+   justify-content: space-between;
+   width: 100%;
+  }
+ 
+  .header-toolbar {
+   border-bottom: none;
+   margin-bottom: 0px;
+ }
+ .header{
+   display: flex;
+   align-self: center;
+ }
+
+}

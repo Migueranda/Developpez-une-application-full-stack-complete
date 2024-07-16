@@ -164,3 +164,28 @@
     transform: scale(2);
     margin-left: 30px;
 }
+@media (max-width: 600px) {
+    .custom-icon{
+      width: 32px;
+      height: 32px; 
+
+    }
+    .mat-card-title{
+      font-size: 24px;
+    }
+
+    .p-content-date-user-theme {
+        
+        width: 80%;
+        flex-wrap: wrap;
+    }
+    .mat-card-content{
+     
+        width: 80%
+    }
+    .container-button-title{
+        margin-top: 20px;
+        width: 70%;
+    }
+    
+  }
