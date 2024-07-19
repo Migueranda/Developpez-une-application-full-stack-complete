@@ -30,7 +30,4 @@ export class PostService {
     return this.httpClient.put<Post>(`${this.pathService}/${post.id}`, post);
   }
 
-//   deletePost(id: number): Observable<void> {
-//     return this.http.delete<void>(`${this.apiUrl}/${id}`);
-//   }
 }

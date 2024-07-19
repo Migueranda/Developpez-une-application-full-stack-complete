@@ -29,23 +29,4 @@ export class UserService {
     return !!this.authService.userValue;
   }
   
-  // getUsers(): Observable<User[]> {
-  //   return this.httpClient.get<User[]>(this.pathService);
-  // }
-
-  // getUserById(id: number): Observable<User> {
-  //     return this.httpClient.get<User>(`${this.pathService}/${id}`);
-  // }
-
-  // createUser(user: User): Observable<User> {
-  //   return this.httpClient.post<User>(this.pathService, user);
-  // }
-
-  // updateUser(id: number, user: User): Observable<User> {
-  //   return this.httpClient.put<User>(`${this.pathService}/${id}`, user);
-  // }
-
-  // deleteUser(id: number): Observable<void> {
-  //   return this.httpClient.delete<void>(`${this.pathService}/${id}`);
-  // }
 }

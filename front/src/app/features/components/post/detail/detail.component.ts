@@ -10,7 +10,7 @@ import { UserService } from '../../user/service/user.sevice';
 import { Comment, CreateComment } from '../interface/comment.model';
 import { AuthService } from 'src/app/features/auth/auth.service'; 
 import { forkJoin, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
 
@@ -21,6 +21,8 @@ import { DatePipe } from '@angular/common';
   providers: [DatePipe]
 })
 export class DetailComponent implements OnInit {
+ 
+
   posts: Post | undefined;
   public commentForm: FormGroup;
   public subjects$ = this.subjectService.getSubjects();
@@ -40,7 +42,8 @@ export class DetailComponent implements OnInit {
     private matSnackBar: MatSnackBar,
     public router: Router,
     private authService: AuthService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe 
+
   ) {
     this.commentForm = this.fb.group({
       description: ['', Validators.required]
@@ -82,62 +85,65 @@ export class DetailComponent implements OnInit {
     console.log('Le thème associé:', themeTitle);
   }
 
-  loadComments(postId: number): void {
-    this.commentService.getCommentsByPostId(postId).subscribe(comments => {
+loadComments(postId: number): void {
+  this.commentService.getCommentsByPostId(postId).subscribe(comments => {
       const userObservables = comments.map(comment => {
-        if (this.userMap.has(comment.userId)) {
-          return of(this.userMap.get(comment.userId)); 
-        } else {
+          //  pour récupérer le nom d'utilisateur pour chaque commentaire
           return this.userService.getUserById(comment.userId).pipe(
-            switchMap(user => {
-              if (user && user.userName) {
-                console.log(`Ajout de l'utilisateur ${user.userName} dans le cache pour userId ${comment.userId}`);
-                this.userMap.set(comment.userId, user.userName);
-                return of(user.userName);
-              } else {
-                return of('Utilisateur inconnu');
-              }
+            map(user => {
+                return {...comment, userName: user.userName};
+            }),
+            catchError(error => {
+                console.error(`Erreur lors de la récupération du nom d'utilisateur pour userId: ${comment.userId}`, error);
+                return of({...comment, userName: 'Erreur de récupération'});
             })
-          );
-        }
+        );
+        
       });
 
-      forkJoin(userObservables).subscribe(usernames => {
-        console.log('Commentaires chargés :', comments);
-        console.log('Noms des utilisateurs :', usernames);
-        this.comments = comments.map((comment, index) => ({
-          ...comment,
-          username: usernames[index]
-        }));
+      forkJoin(userObservables).subscribe(commentsWithUsers => {
+          this.comments = commentsWithUsers.map(comment => ({
+              ...comment,
+              formattedDate: this.datePipe.transform(comment.date, 'short')
+          }));
+          console.log("Commentaires après traitement:", this.comments);
       });
-    });
-  }
+  });
+}
 
-  getUsername(userId: number): string {
-    const username = this.userMap.get(userId);
-    console.log(`Récupération du nom d'utilisateur pour userId ${userId}: ${username}`);
-    return username || 'Utilisateur inconnu';
-  }
-
-  onSubmit(): void {
-    if (this.commentForm?.valid && this.posts?.id && this.user) {
+onSubmit(): void {
+  if (this.commentForm?.valid && this.posts?.id && this.user) {
       const commentData: CreateComment = {
-        postId: this.posts.id,
-        userId: this.user.id,
-        description: this.commentForm.value.description
+          postId: this.posts.id,
+          userId: this.user.id,
+          description: this.commentForm.value.description,
+          date: new Date() 
       };
       this.commentService.addComment(this.posts.id, commentData).subscribe({
-        next: (comment) => {
-          this.matSnackBar.open('Commentaire ajouté avec succès', 'Fermer', { duration: 3000 });
-          this.commentForm?.reset();
-          if (this.posts?.id) {
-            this.loadComments(this.posts.id); 
+          next: (comment) => {
+              this.matSnackBar.open('Commentaire ajouté avec succès', 'Fermer', { duration: 3000 });
+              this.commentForm?.reset();
+          
+              this.comments.push({
+                  ...comment,
+                  username: this.user.userName,
+                  formattedDate: this.datePipe.transform(new Date(), 'short')
+              });
+          },
+          error: (error) => {
+              this.matSnackBar.open('Échec de l\'ajout du commentaire', 'Fermer', { duration: 3000 });
           }
-        },
-        error: () => {
-          this.matSnackBar.open('Échec de l\'ajout du commentaire', 'Fermer', { duration: 3000 });
-        }
       });
-    }
   }
+}
+
+getUsername(userId: number): string {
+  if (!userId) { // Vérification si userId est null ou undefined
+      console.log("Appel de getUsername avec userId indéfini.");
+      return 'Utilisateur inconnu';
+  }
+  const username = this.userMap.get(userId);
+  return username || 'Utilisateur inconnu';
+}
+
 }

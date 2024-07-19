@@ -77,7 +77,6 @@
     align-items: center;
     width: 100%;
     color: black;
-    // border: 1px solid  bor;
     border-radius: 16px;
     background-color:     #EEEEEE;
     height: 100px;
@@ -106,16 +105,6 @@
     line-height: 3;
     
 }
-// #content-date-user-theme{
-//     width: 100%;
-//     display: flex;
-//     justify-content: space-between;
-//     display: flex;
-//     justify-content: center;
-//     // flex-wrap: wrap;
-//     // width: 90%
-// }
-
 
 .text-date-user-theme{
     padding: 10px;
@@ -125,30 +114,6 @@
     margin-bottom: initial !important;
     font-weight: bold;
 }
-// .mat-card-content{
-//     display: flex;
-//     justify-content: center;
-//     flex-wrap: wrap;
-//     // width: 90%;
-// }
-
-// .mat-card{
-//     width:40%;
-//     height:auto ;
-//     border-radius: 8px;
-//     background: #F5F5F5;
-//     margin: 16px!important;    
-// }
-
-// .mat-card:hover {
-//     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-// }
-// .mat-card-title {
-//     color: #333;
-//     font-size: 24px;
-//     margin-bottom: 40px;
-    
-// }
 
 .button-row  {
     display: flex;
@@ -176,16 +141,39 @@
 
     .p-content-date-user-theme {
         
-        width: 80%;
+        width: 100%;
         flex-wrap: wrap;
     }
     .mat-card-content{
      
-        width: 80%
+        width: 90%
     }
     .container-button-title{
         margin-top: 20px;
         width: 70%;
+    }
+    .comment-description{
+        width: 80%;
+        align-self: center;
+    }
+    .content-date-user-theme{
+   
+ 
+        width: 90%;
+    }
+    .description-content-comment{
+        display: flex!important;
+        flex-direction: column!important;
+    }
+   
+    .comment-date{
+        align-self: flex-end;
+        font-size: 12px;
+        
+         
+     margin-bottom: 20px;
+     width: 40%;
+       
     }
     
   }

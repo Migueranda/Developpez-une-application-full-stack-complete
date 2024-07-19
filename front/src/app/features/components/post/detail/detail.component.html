@@ -20,11 +20,17 @@
   <h3 class="comment-title">Commentaires</h3>
   <div *ngFor="let comment of comments" class="description-content-comment">
     <div class="comment-username" >
-      {{ getUsername(comment.userId) }}
+      {{ comment.userName }}
+    </div>
+    <div class="container-descip-date">
+
     </div>
     <div class="comment-description">
       {{ comment.description }}
     </div>    
+    <div class="comment-date" >
+      {{ comment.formattedDate}}
+    </div>
   </div>
 
   <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="content-comment-input-content">     

@@ -4,13 +4,13 @@ export interface Comment {
     description: string;
     date?: Date;
     userId: number;
-    username: string;
+    userName: string;
   }
 
   export interface CreateComment {
     postId: number;
     userId: number;
     description: string;
-    
+    date:  Date;
   }
   

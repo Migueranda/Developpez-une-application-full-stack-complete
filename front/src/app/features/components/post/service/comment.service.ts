@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Comment, CreateComment } from '../interface/comment.model'; 
 
 @Injectable({
@@ -18,5 +18,4 @@ export class CommentService {
   addComment(postId: number, comment: CreateComment): Observable<Comment> {
     return this.httpClient.post<Comment>(`${this.pathService}/post/${postId}/comment`, comment);
   }
-  
 }

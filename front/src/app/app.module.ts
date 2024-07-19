@@ -5,13 +5,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
-// import { SubjectComponent } from './features/components/subject/subject.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { HeaderComponent } from './features/components/header/header.component';
-// import { PostComponent } from './features/components/post/post.component';
 import { FormComponent } from './features/components/post/form/form.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,8 +20,6 @@ import {LayoutModule} from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatInputModule} from '@angular/material/input';
 import { DetailComponent } from './features/components/post/detail/detail.component';
-// import { PostComponent } from './features/components/post/list/post.component';
-// import { SubjectComponent } from './features/components/subject/list/subject.component';
 import { SubjectComponent } from './features/components/subject/list/subject.component';
 import { PostComponent } from './features/components/post/list/post.component';
 import { UserComponent } from './features/components/user/user.component';
@@ -32,6 +28,7 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { AuthService } from './features/auth/auth.service';
 import { LoginRoutingModule } from './features/auth/auth-routing.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { AuthInterceptor } from './features/auth/AuthInterceptor';
 
 
 const materialModule = [
@@ -69,7 +66,9 @@ const materialModule = [
    
     ...materialModule
   ],
-  providers: [{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}, AuthService],
+  providers: [{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}, AuthService, 
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   
   bootstrap: [AppComponent],
 })
