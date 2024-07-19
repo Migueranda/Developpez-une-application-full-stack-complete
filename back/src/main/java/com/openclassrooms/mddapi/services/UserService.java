@@ -1,7 +1,9 @@
 package com.openclassrooms.mddapi.services;
 
+import com.openclassrooms.mddapi.AppException;
 import com.openclassrooms.mddapi.mapper.UserMapper;
-import com.openclassrooms.mddapi.model.dtos.SubjectDto;
+import com.openclassrooms.mddapi.model.dtos.CredentialsDto;
+import com.openclassrooms.mddapi.model.dtos.SignUpDto;
 import com.openclassrooms.mddapi.model.dtos.UserDto;
 import com.openclassrooms.mddapi.model.entities.Subject;
 import com.openclassrooms.mddapi.model.entities.UserEntity;
@@ -11,93 +13,79 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
+import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Data
 @Service
 public class UserService {
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final SubjectRepository subjectRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private UserMapper userMapper;
-
-    public UserDto register(UserDto userDto){
-        Optional<UserEntity> optionalUserEntity = userRepository.findByEmail(userDto.getEmail());
-
-        if (optionalUserEntity.isPresent()) {
-            throw new RuntimeException("Email already exists");
-        }
-        //Conversion du DTO en Entité
-        UserEntity userEntity = userMapper.toEntity(userDto);
-
-       // Sauvegarde de l'Utilisateur
-        UserEntity savedUserEntity = userRepository.save(userEntity);
-
-        return userMapper.toDto(savedUserEntity);
+    public UserService(UserRepository userRepository, SubjectRepository subjectRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.subjectRepository = subjectRepository;
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDto login(UserDto userDto){
-        Optional<UserEntity> optionalUserEntity = userRepository.findByEmail(userDto.getEmail());
 
-        if (!optionalUserEntity.isPresent()) {
-            throw new RuntimeException("Unkown user");
+    public UserDto register(SignUpDto signUpDto){
+        Optional<UserEntity> oUser = userRepository.findByEmail(signUpDto.email());
+        if (oUser.isPresent()){
+            throw new AppException("User already exists", HttpStatus.BAD_REQUEST);
         }
 
-        UserEntity userEntity = optionalUserEntity.get();
+        UserEntity user = userMapper.signUpToUser(signUpDto);// A verifier
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDto.password())));
 
-        // Vérifie le mot de passe
-        if (!userEntity.getPassword().equals(userDto.getPassword())) {
-            throw new RuntimeException("Invalid password");
+        UserEntity savedUser = userRepository.save(user);
+        System.out.println("User registered successfully with email: " + signUpDto.email());
+        return userMapper.toDto(savedUser);
+    }
+
+
+    public UserDto login(CredentialsDto credentialsDto){
+        UserEntity user = userRepository.findByEmail(credentialsDto.email())
+                .orElseThrow(() -> new AppException("Unkown user", HttpStatus.NOT_FOUND));
+        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()),
+                user.getPassword())) {
+            return userMapper.toDto(user);
         }
-        //Retour des Détails de l'Utilisateur
-        userDto.setId(userEntity.getId());
-        userDto.setEmail(userEntity.getEmail());
-
-        return userMapper.toDto(userEntity);
+        throw new AppException("Invalide password",HttpStatus.BAD_REQUEST);
     }
 
     public UserDto getUser(final Long id) {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("UserEntity not found for id: " + id));
-
-//       List<Subject> subjects = subjectRepository.findByUsers_Id(id);
-
         List<Subject> subjects = subjectRepository.findByUsers_Id(id);
 
-//        subjects.forEach(subject -> {
-//            System.out.println("Subject ID: " + subject.getId());
-//            System.out.println("Subject Title: " + subject.getTitle());
-//            System.out.println("Subject Description: " + subject.getDescription());
-//        });
-//        System.out.println("Subject all: " + subjects);
-//
         return userMapper.toDto(userEntity, subjects);
-        //return userMapper.toDto(userEntity);
     }
 
-    public UserDto updateUser (Long id, UserDto userDto){
-
+    public UserDto updateUser(Long id, UserDto userDto) {
         UserEntity existingUserEntity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("UserEntity not found for id: " + id));
 
         existingUserEntity.setEmail(userDto.getEmail());
-        existingUserEntity.setUsername(userDto.getUserName());
-        existingUserEntity.setPassword(userDto.getPassword());
+        existingUserEntity.setUserName(userDto.getUserName());
+
+        if (!userDto.getPassword().equals(existingUserEntity.getPassword())) {
+            existingUserEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
+        }
 
         UserEntity updatedUserEntity = userRepository.save(existingUserEntity);
         return userMapper.toDto(updatedUserEntity);
-
     }
-
-
-
 }
+
+
+
+

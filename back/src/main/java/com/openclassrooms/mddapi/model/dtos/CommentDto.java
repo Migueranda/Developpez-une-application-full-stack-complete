@@ -2,13 +2,10 @@ package com.openclassrooms.mddapi.model.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.openclassrooms.mddapi.model.entities.CommentEntity;
-import com.openclassrooms.mddapi.model.entities.Subject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -23,7 +20,7 @@ public class CommentDto {
     private Date date;
     private Long userId;
     private Long postId;
-
+    private String userName;
 
     public static CommentDto convertToDto(CommentEntity commentEntity) {
         CommentDto commentDto = new CommentDto();

@@ -1,13 +1,11 @@
 package com.openclassrooms.mddapi.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -28,7 +26,6 @@ public class CommentEntity {
 
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.DATE)
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date date;
 
     @ManyToOne

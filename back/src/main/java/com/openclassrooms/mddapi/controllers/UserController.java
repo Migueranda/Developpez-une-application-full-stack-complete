@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.controllers;
 
-//import com.openclassrooms.mddapi.model.dtos.SubjectDto;
 import com.openclassrooms.mddapi.model.dtos.UserDto;
 import com.openclassrooms.mddapi.services.UserService;
 import jakarta.persistence.EntityNotFoundException;

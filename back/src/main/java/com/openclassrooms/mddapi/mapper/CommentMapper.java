@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class CommentMapper implements EntityMapper<CommentDto, CommentEntity> {
-
+public interface CommentMapper extends EntityMapper<CommentDto, CommentEntity> {
 
     @Override
-    public CommentEntity toEntity(CommentDto dto) {
+    public default CommentEntity toEntity(CommentDto dto) {
         if (dto == null) {
             return null;
         }
@@ -24,14 +23,13 @@ public class CommentMapper implements EntityMapper<CommentDto, CommentEntity> {
         comment.setDescription(dto.getDescription());
         comment.setDate(dto.getDate());
 
-        // Assurer que User et Post sont correctement assignés
         if (dto.getUserId() != null) {
-            UserEntity user = new UserEntity(); // Idéalement récupéré via un userRepository
+            UserEntity user = new UserEntity();
             user.setId(dto.getUserId());
             comment.setUser(user);
         }
         if (dto.getPostId() != null) {
-            PostEntity post = new PostEntity(); // Idéalement récupéré via un postRepository
+            PostEntity post = new PostEntity();
             post.setId(dto.getPostId());
             comment.setPost(post);
         }
@@ -40,7 +38,7 @@ public class CommentMapper implements EntityMapper<CommentDto, CommentEntity> {
     }
 
     @Override
-    public CommentDto toDto(CommentEntity entity) {
+    public default CommentDto toDto(CommentEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -55,7 +53,7 @@ public class CommentMapper implements EntityMapper<CommentDto, CommentEntity> {
     }
 
     @Override
-    public List<CommentEntity> toEntity(List<CommentDto> dtoList) {
+    public default List<CommentEntity> toEntity(List<CommentDto> dtoList) {
         if (dtoList == null) {
             return null;
         }
@@ -66,7 +64,7 @@ public class CommentMapper implements EntityMapper<CommentDto, CommentEntity> {
     }
 
     @Override
-    public List<CommentDto> toDto(List<CommentEntity> entityList) {
+    public default List<CommentDto> toDto(List<CommentEntity> entityList) {
         if (entityList == null) {
             return null;
         }

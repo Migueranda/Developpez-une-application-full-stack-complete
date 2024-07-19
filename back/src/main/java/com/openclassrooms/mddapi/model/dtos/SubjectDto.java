@@ -1,13 +1,10 @@
     package com.openclassrooms.mddapi.model.dtos;
 
     import com.openclassrooms.mddapi.model.entities.Subject;
-    import com.openclassrooms.mddapi.model.entities.UserEntity;
     import lombok.AllArgsConstructor;
     import lombok.Builder;
     import lombok.Data;
     import lombok.NoArgsConstructor;
-
-    import java.sql.Timestamp;
     import java.util.Date;
 
     @Data

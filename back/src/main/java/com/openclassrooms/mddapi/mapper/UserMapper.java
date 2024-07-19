@@ -1,10 +1,11 @@
 package com.openclassrooms.mddapi.mapper;
 
+import com.openclassrooms.mddapi.model.dtos.SignUpDto;
 import com.openclassrooms.mddapi.model.dtos.SubjectDto;
 import com.openclassrooms.mddapi.model.dtos.UserDto;
-//import com.openclassrooms.mddapi.model.dtos.SubjectDto;
 import com.openclassrooms.mddapi.model.entities.UserEntity;
 import com.openclassrooms.mddapi.model.entities.Subject;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class UserMapper implements EntityMapper<UserDto, UserEntity> {
 
         return UserEntity.builder()
                 .id(dto.getId())
-                .username(dto.getUserName())
+                .userName(dto.getUserName())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .build();
@@ -35,7 +36,7 @@ public class UserMapper implements EntityMapper<UserDto, UserEntity> {
 
         return UserDto.builder()
                 .id(entity.getId())
-                .userName(entity.getUsername())
+                .userName(entity.getUserName())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .build();
@@ -52,7 +53,7 @@ public class UserMapper implements EntityMapper<UserDto, UserEntity> {
 
         return UserDto.builder()
                 .id(entity.getId())
-                .userName(entity.getUsername())
+                .userName(entity.getUserName())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .subscription(subjectDtos)
@@ -91,5 +92,17 @@ public class UserMapper implements EntityMapper<UserDto, UserEntity> {
                 .title(subject.getTitle())
                 .description(subject.getDescription())
                 .build();
+    }
+    @Mapping(target = "password", ignore = true)
+    public UserEntity signUpToUser(SignUpDto signUpDto) {
+        if (signUpDto == null) {
+            return null;
+        }
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserName(signUpDto.userName());
+        userEntity.setEmail(signUpDto.email());
+
+        return userEntity;
     }
 }

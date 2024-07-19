@@ -1,15 +1,12 @@
 package com.openclassrooms.mddapi.model.entities;
 
-import com.openclassrooms.mddapi.model.dtos.UserDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,7 +29,6 @@ public class Subject {
     private String description;
 
     @Temporal(TemporalType.DATE)
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date date;
 
     @ManyToMany(mappedBy = "subjects")

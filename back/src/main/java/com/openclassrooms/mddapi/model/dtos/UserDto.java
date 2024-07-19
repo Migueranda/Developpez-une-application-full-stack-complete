@@ -3,12 +3,12 @@ package com.openclassrooms.mddapi.model.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.openclassrooms.mddapi.model.entities.Subject;
 import com.openclassrooms.mddapi.model.entities.UserEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,15 +22,17 @@ import java.util.stream.Collectors;
         private Long id;
         private String userName;
         private String email;
+        private String token;
         private String password;
         private List<SubjectDto> subscription;
 
         public static UserDto convertToDto (UserEntity userEntity, List<Subject> subjects){
             UserDto userDto = new UserDto();
             userDto.setId(userEntity.getId());
-            userDto.setUserName(userEntity.getUsername());
+            userDto.setUserName(userEntity.getUserName());
             userDto.setEmail(userEntity.getEmail());
             userDto.setPassword(userEntity.getPassword());
+            userDto.setToken(userEntity.getToken());
 
             userDto.setSubscription(subjects.stream()
                     .map(SubjectDto::convertToDto)

@@ -1,15 +1,11 @@
 package com.openclassrooms.mddapi.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.openclassrooms.mddapi.model.dtos.UserDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,10 +22,13 @@ public class UserEntity {
     private Long id;
 
     @Column(name = "USERNAME")
-    private String username;
+    private String userName;
 
     @Column(name = "EMAIL")
     private String email;
+
+    @Transient
+    private String token;
 
     @Column(name = "PASSWORD")
     private String password;

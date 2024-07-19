@@ -28,7 +28,6 @@ public class PostDto {
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-
     public static PostDto convertToDto(PostEntity postEntity) {
         if (postEntity == null) {
             return null;

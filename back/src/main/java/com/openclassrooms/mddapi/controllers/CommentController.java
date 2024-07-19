@@ -11,20 +11,30 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-//@RequestMapping("/post/{postId}/comments")
 public class CommentController {
 
     @Autowired
     private CommentService commentService;
 
     @PostMapping("/post/{postId}/comment")
-    public ResponseEntity<CommentDto> addComment(@PathVariable Long postId, @RequestBody CommentDto commentDto) {
-        CommentDto createdComment = commentService.addComment(postId, commentDto);
-        return ResponseEntity.created(URI.create("/post/" + postId + "/comments/" + createdComment.getId())).body(createdComment);
+    public ResponseEntity<?> addComment(@PathVariable String postId, @RequestBody CommentDto commentDto) {
+        try {
+            Long postID = Long.parseLong(postId);
+            CommentDto createdComment = commentService.addComment(postID, commentDto);
+            return ResponseEntity.created(URI.create("/post/" + postID + "/comments/" + createdComment.getId())).body(createdComment);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid post ID format");
+        }
     }
+
     @GetMapping("/post/{postId}/comment")
-    public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long postId) {
-        List<CommentDto> comments = commentService.getCommentsByPostId(postId);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<?> getComments(@PathVariable String postId) {
+        try {
+            Long postID = Long.parseLong(postId);
+            List<CommentDto> comments = commentService.getCommentsByPostId(postID);
+            return ResponseEntity.ok(comments);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid post ID format");
+        }
     }
 }
