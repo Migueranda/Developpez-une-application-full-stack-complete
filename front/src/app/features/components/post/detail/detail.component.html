@@ -18,20 +18,23 @@
   </div> 
 
   <h3 class="comment-title">Commentaires</h3>
-  <div *ngFor="let comment of comments" class="description-content-comment">
-    <div class="comment-username" >
-      {{ comment.userName }}
-    </div>
-    <div class="container-descip-date">
+  <div *ngFor="let comment of comments" id="description-content-comment" >
+    <div class="description-content-comment">    
+      <div class="comment-username" >
+        {{ comment.userName }}
+      </div>
+      <div class="container-descip-date">
 
-    </div>
-    <div class="comment-description">
-      {{ comment.description }}
-    </div>    
+      </div>
+      <div class="comment-description">
+        {{ comment.description }}
+      </div> 
+  </div>
     <div class="comment-date" >
       {{ comment.formattedDate}}
-    </div>
+    </div>  
   </div>
+  
 
   <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="content-comment-input-content">     
     <textarea  class="comment-input" placeholder="Écrivez ici votre commentaire"  matInput formControlName="description" class="comment-input-content" ></textarea>

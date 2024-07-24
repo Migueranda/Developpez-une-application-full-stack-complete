@@ -13,6 +13,10 @@ import { forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
+/**
+ * Composant pour afficher les détails d'un post.
+ * Gère l'affichage des commentaires et permet aux utilisateurs d'ajouter des commentaires.
+ */
 
 @Component({
   selector: 'app-detail',
@@ -32,6 +36,21 @@ export class DetailComponent implements OnInit {
   userMap = new Map<number, string>(); 
   private postId: number | undefined;
 
+  /**
+   * Constructeur pour injecter les services nécessaires et initialiser le formulaire de commentaire.
+   * 
+   * @param route - Le service ActivatedRoute pour accéder aux paramètres de la route.
+   * @param fb - Le FormBuilder pour créer le formulaire de commentaire.
+   * @param postService - Le service pour gérer les posts.
+   * @param subjectService - Le service pour gérer les thèmes.
+   * @param commentService - Le service pour gérer les commentaires.
+   * @param userService - Le service pour gérer les utilisateurs.
+   * @param matSnackBar - Le MatSnackBar pour afficher des notifications.
+   * @param router - Le Router pour la navigation.
+   * @param authService - Le service d'authentification.
+   * @param datePipe - Le DatePipe pour formater les dates.
+   */
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -50,6 +69,10 @@ export class DetailComponent implements OnInit {
     });
   }
 
+   /**
+   * Initialisation du composant.
+   * Récupère les détails du post et charge les thèmes et les commentaires associés.
+   */
   ngOnInit(): void {
     this.user = this.authService.userValue; 
     const postIdParam = this.route.snapshot.paramMap.get('id');
@@ -72,6 +95,9 @@ export class DetailComponent implements OnInit {
     this.loadSubjects();
   }
 
+  /**
+   * Charge tous les thèmes disponibles et les stocke dans une map.
+   */
   loadSubjects(): void {
     this.subjectService.getSubjects().subscribe(themes => {
       themes.forEach(theme => {
@@ -80,10 +106,21 @@ export class DetailComponent implements OnInit {
     });
   }
 
+  /**
+   * Charge le sujet associé à un thèmeId spécifique.
+   * 
+   * @param themeId - L'identifiant du thème.
+   */
   loadSubject(themeId: number): void {
     const themeTitle = this.subjectMap.get(themeId) || 'Thème inconnu';
     console.log('Le thème associé:', themeTitle);
   }
+
+  /**
+   * Charge les commentaires associés à un post spécifique et enrichit chaque commentaire avec le nom de l'utilisateur.
+   * 
+   * @param postId - L'identifiant du post.
+   */
 
 loadComments(postId: number): void {
   this.commentService.getCommentsByPostId(postId).subscribe(comments => {
@@ -111,6 +148,10 @@ loadComments(postId: number): void {
   });
 }
 
+ /**
+   * Gère la soumission du formulaire de commentaire.
+   * Ajoute un nouveau commentaire et met à jour la liste des commentaires affichés.
+   */
 onSubmit(): void {
   if (this.commentForm?.valid && this.posts?.id && this.user) {
       const commentData: CreateComment = {
@@ -137,6 +178,12 @@ onSubmit(): void {
   }
 }
 
+ /**
+   * Récupère le nom d'utilisateur pour un identifiant utilisateur spécifique.
+   * 
+   * @param userId - L'identifiant de l'utilisateur.
+   * @returns Le nom de l'utilisateur ou 'Utilisateur inconnu' si l'utilisateur n'est pas trouvé.
+   */
 getUsername(userId: number): string {
   if (!userId) { // Vérification si userId est null ou undefined
       console.log("Appel de getUsername avec userId indéfini.");

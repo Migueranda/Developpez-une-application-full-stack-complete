@@ -3,7 +3,8 @@
     display: flex;
     justify-content: space-around;
     flex-direction: column;
-    width: 50%;
+    // width: 50%;
+    width: 85%;
     margin: auto;
     height: auto;
     align-items: center;
@@ -23,15 +24,18 @@
 }
 .content-date-user-theme{
     margin-bottom: 20px;
+    width: 98%;
 }
 
 .container-button-title{
     display: flex;
-    width: 29%;
+    // width: 20%;
+   width: 280px;;
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    margin-left: 20px;
+    margin-left: 30px;
+    margin-top: 20px;
  
 }
 .p-content-date-user-theme{
@@ -39,6 +43,13 @@
     width: 60%;
     margin-bottom: 20px;
     justify-content: space-between;
+    white-space: nowrap;
+}
+.comment-date{
+    width: 93%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0px;
 }
 
 
@@ -59,7 +70,12 @@
     display: flex;
    justify-content: space-between;
    margin: auto;
+   flex-wrap: wrap;
     
+    
+}
+#description-content-comment{
+    width: 100%;
     
 }
 .comment-username{
@@ -80,7 +96,6 @@
     border-radius: 16px;
     background-color:     #EEEEEE;
     height: 100px;
-    margin-bottom: 15px;
     text-align: center;
     line-height: 6;
     font-size: 16px;
@@ -149,11 +164,10 @@
         width: 90%
     }
     .container-button-title{
-        margin-top: 20px;
-        width: 70%;
+        margin-top: 20px
     }
     .comment-description{
-        width: 80%;
+        width: 100%;
         align-self: center;
     }
     .content-date-user-theme{
@@ -168,12 +182,13 @@
    
     .comment-date{
         align-self: flex-end;
-        font-size: 12px;
-        
-         
-     margin-bottom: 20px;
-     width: 40%;
-       
+        font-size: 12px;   
+        margin-bottom: 20px;
+        width: 93%;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 0px;
     }
+
     
   }

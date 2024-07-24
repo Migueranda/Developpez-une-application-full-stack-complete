@@ -6,6 +6,10 @@ import { SubjectService } from '../subject/service/subject.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from './interface/user.model'; 
 
+/**
+ * Composant pour afficher et gérer le profil utilisateur.
+ * Permet aux utilisateurs de mettre à jour leurs informations de profil, de se déconnecter et de gérer leurs abonnements.
+ */
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -15,6 +19,16 @@ export class UserComponent implements OnInit {
   profileForm: FormGroup;
   user: any;
   subscriptions: Subject[] = [];
+
+   /**
+   * Constructeur pour injecter les services nécessaires et initialiser le formulaire de profil.
+   * 
+   * @param {FormBuilder} fb - Le FormBuilder pour créer le formulaire.
+   * @param {AuthService} authService - Le service d'authentification.
+   * @param {UserService} userService - Le service utilisateur pour gérer les opérations utilisateur.
+   * @param {SubjectService} subjectService - Le service des thèmes pour gérer les abonnements.
+   * @param {MatSnackBar} snackBar - Le MatSnackBar pour afficher des notifications.
+   */
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +43,10 @@ export class UserComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
-
+/**
+   * Initialisation du composant.
+   * Charge les informations utilisateur et leurs abonnements.
+   */
   ngOnInit(): void {
     this.user = this.authService.userValue;
     if (this.user) {
@@ -41,6 +58,9 @@ export class UserComponent implements OnInit {
     }
   }
 
+/**
+   * Charge les abonnements de l'utilisateur.
+   */
   loadSubscriptions(): void {
     if (this.user) {
       this.userService.getUserById(this.user.id).subscribe(user => {
@@ -49,6 +69,9 @@ export class UserComponent implements OnInit {
     }
   }
 
+  /**
+   * Soumet le formulaire de mise à jour du profil.
+   */
   onSubmit(): void {
     if (this.profileForm.valid) {
       this.userService.updateUser(this.user.id, this.profileForm.value).subscribe({

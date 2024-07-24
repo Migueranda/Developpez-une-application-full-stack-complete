@@ -5,6 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
+/**
+ * Composant pour la page de connexion.
+ * Gère l'authentification des utilisateurs en vérifiant leurs informations d'identification.
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,6 +21,15 @@ export class LoginComponent implements OnInit {
   hidePassword = true;
   errorMessage: string = '';
 
+/**
+   * Constructeur pour injecter les services nécessaires et initialiser le formulaire de connexion.
+   *
+   * @param {AuthService} authService - Le service d'authentification.
+   * @param {Router} router - Le routeur Angular pour la navigation.
+   * @param {FormBuilder} fb - Le FormBuilder pour créer le formulaire de connexion.
+   * @param {MatIconRegistry} iconRegistry - Le registre des icônes Material.
+   * @param {DomSanitizer} sanitizer - Le service pour sécuriser les URL des icônes.
+   */
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -39,6 +52,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * Gère la soumission du formulaire de connexion.
+   * Vérifie si le formulaire est valide, puis tente de connecter l'utilisateur via le service d'authentification.
+   * En cas d'erreur, affiche un message d'erreur approprié.
+   */
   login(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
@@ -55,6 +73,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
+
+  /**
+   * Bascule la visibilité du mot de passe dans le champ de saisie.
+   */
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
   }
