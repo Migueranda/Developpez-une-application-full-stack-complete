@@ -20,6 +20,11 @@ import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe de service pour la gestion des utilisateurs.
+ *Fournit des méthodes pour l'inscription, la connexion, la récuperation et la mise à jour des données des utilisateurs.
+ */
+
 @Data
 @Service
 public class UserService {
@@ -36,14 +41,20 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
+    /**
+     * Enregistrer un nouvel utilisateur dans la base de données.
+     *
+     * @param signUpDto l'objet de transfert de données contenant les informations de l'inscription
+     * @return l'objet de transfert de données représentant l'utilisateur enregistré.
+     * @throws  AppException si un utilisateur avec le même email existe déjà.
+     */
     public UserDto register(SignUpDto signUpDto){
         Optional<UserEntity> oUser = userRepository.findByEmail(signUpDto.email());
         if (oUser.isPresent()){
             throw new AppException("User already exists", HttpStatus.BAD_REQUEST);
         }
 
-        UserEntity user = userMapper.signUpToUser(signUpDto);// A verifier
+        UserEntity user = userMapper.signUpToUser(signUpDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDto.password())));
 
         UserEntity savedUser = userRepository.save(user);
@@ -51,7 +62,13 @@ public class UserService {
         return userMapper.toDto(savedUser);
     }
 
-
+    /**
+     * Authentifie un utilisateur et permet sa connexion
+     *
+     * @param credentialsDto l'objet de transfert de données contenant les identifiants de connexion.
+     * @return l'objet de transfert de données représentant l'utilisateur connecté.
+     * @throws AppException si l'adresse email n'existe pas ou le mot de passe est incorrect.
+     * */
     public UserDto login(CredentialsDto credentialsDto){
         UserEntity user = userRepository.findByEmail(credentialsDto.email())
                 .orElseThrow(() -> new AppException("Unkown user", HttpStatus.NOT_FOUND));
@@ -62,6 +79,13 @@ public class UserService {
         throw new AppException("Invalide password",HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Récupère un utilisateur par son identifiant.
+     *
+     * @param id l'identifiant de l'utilisateur à récupérer
+     * @return l'objet de transfert de données représentant l'utilisateur.
+     * @throws EntityNotFoundException si l'utilisateur n'est pas trouvé.
+     */
     public UserDto getUser(final Long id) {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("UserEntity not found for id: " + id));
@@ -70,6 +94,14 @@ public class UserService {
         return userMapper.toDto(userEntity, subjects);
     }
 
+    /**
+     * Met à jour les informations dans un utilisateur dans la base de données.
+     *
+     * @param id l'identifiant de l'utilisateur à mettre à jour
+     * @param userDto l'objet de transfert de données contenant les informations de l'utilisateur mise à jour.
+     * @return l'objet de transfert de données représentant l'utilisateur à jour.
+     *  @throws EntityNotFoundException si l'utilisateur n'est pas trouvé
+     */
     public UserDto updateUser(Long id, UserDto userDto) {
         UserEntity existingUserEntity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("UserEntity not found for id: " + id));

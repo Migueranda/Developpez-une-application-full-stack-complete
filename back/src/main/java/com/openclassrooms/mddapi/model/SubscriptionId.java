@@ -1,17 +1,19 @@
 package com.openclassrooms.mddapi.model;
 
-import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
-
+/**
+ * Classe représentant l'identifiant composite pour l'entité Subscription.
+ * Composé de l'identifiant de l'utilisateur et de l'identifiant du sujet.
+ */
 @Setter
 @Getter
 public class SubscriptionId implements Serializable {
-    private Long user; // Correspond au type de l'ID de UserEntity
-    private Long subject; // Correspond au type de l'ID de Subject
+    private Long user;
+    private Long subject;
 
     public SubscriptionId() {
     }
@@ -20,6 +22,13 @@ public class SubscriptionId implements Serializable {
         this.user = user;
         this.subject = subject;
     }
+
+    /**
+     * Vérifie l'égalité entre cet objet SubscriptionId et un autre objet.
+     *
+     * @param o l'objet à comparer avec cet objet SubscriptionId
+     * @return true si les objets sont égaux, false sinon
+     */
 
     @Override
     public boolean equals(Object o) {

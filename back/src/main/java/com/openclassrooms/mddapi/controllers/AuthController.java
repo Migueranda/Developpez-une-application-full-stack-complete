@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+/**
+ * Contrôleur gérant l'authentification des utilisateurs.
+ * Fournit des points de terminaison pour l'inscription et la connexion.
+ */
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +29,13 @@ public class AuthController {
     private  UserService userService;
 
     private final UserAuthProvider userAuthProvider;
+
+    /**
+     * Inscrit un nouvel utilisateur.
+     *
+     * @param signUpDto l'objet de transfert de données contenant les informations d'inscription
+     * @return une ResponseEntity contenant l'objet UserDto de l'utilisateur inscrit.
+     */
 
     @PostMapping("/auth/register")
     public ResponseEntity<UserDto> register(@RequestBody SignUpDto signUpDto) {
@@ -38,6 +49,12 @@ public class AuthController {
         }
     }
 
+    /**
+     * Connecte un utilisateur existant.
+     *
+     * @param credentialsDto l'objet de transfert de données contenant les informations de connexion
+     * @return une ResponseEntity contenant l'objet UserDto de l'utilisateur connecté
+     */
     @PostMapping("/auth/login")
     public ResponseEntity<UserDto> login(@RequestBody CredentialsDto credentialsDto){
         UserDto user = userService.login(credentialsDto);

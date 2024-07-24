@@ -16,17 +16,31 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 
+/**
+ * Composant pour la gestion de l'authentification des utilisateurs via JWT.
+ * Fournit des méthodes pour créer et valider des tokens JWT.
+ */
+
 @RequiredArgsConstructor
 @Component
 public class UserAuthProvider {
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
+    /**
+     * Initialise la clé secrète en la convertissant en une chaîne de caractères Base64.
+     */
     @PostConstruct
     protected void init(){
-        //convertion de la secretKey en une chaîne de caractères Base64.
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
+
+    /**
+     * Crée un token JWT pour un utilisateur donné.
+     *
+     * @param userDto l'objet de transfert de données contenant les informations de l'utilisateur
+     * @return le token JWT généré
+     */
     public String createToken(UserDto userDto){
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3_600_000);
@@ -41,6 +55,12 @@ public class UserAuthProvider {
         return token;
     }
 
+    /**
+     * Valide un token JWT et renvoie un objet Authentication.
+     *
+     * @param token le token JWT à valider
+     * @return l'objet Authentication correspondant
+     */
     public Authentication validateToken(String token){
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);

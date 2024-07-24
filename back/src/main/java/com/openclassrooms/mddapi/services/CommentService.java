@@ -15,6 +15,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service fournissant des opérations de gestion des commentaires.
+ * Gère la récupération et l'ajout de commentaires associés à des posts.
+ */
+
 @Service
 public class CommentService {
 
@@ -29,10 +34,23 @@ public class CommentService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Récupère tous les commentaires associés à un post spécifique.
+     * @param postId l'identifiant du post pour lequel récupérer les commentaires
+     * @return une liste de CommentDto représentant les commentaires du post
+     */
+
     public List<CommentDto> getCommentsByPostId(Long postId) {
         List<CommentEntity> comments = commentRepository.findByPostId(postId);
         return comments.stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
+    /**
+     * Convertit une entité CommentEntity en CommentDto.
+     *
+     * @param entity l'entité CommentEntity à convertir
+     * @return le CommentDto résultant de la conversion
+     */
     private CommentDto convertToDto(CommentEntity entity) {
         UserEntity user = entity.getUser();
         String userName = user != null ? user.getUserName() : "Utilisateur inconnu";
@@ -47,6 +65,14 @@ public class CommentService {
                 .build();
     }
 
+    /**
+     *Ajoute un nouveau commentaire à un post existant
+     *
+     * @param postId l'identifiant du post auquel ajouter le commentaire.
+     * @param commentDto l'objet de transfert de données contenant les informations du commentaire à ajouter.
+     * @return l'objet de transfert de données représentant le commentaire ajouté.
+     *@throws IllegalArgumentException si le post ou l'utilisateur associé au commentaire n'est pas trouvé ou si l'ID de l'utilisateur est null
+     */
     public CommentDto addComment(Long postId, CommentDto commentDto) {
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));

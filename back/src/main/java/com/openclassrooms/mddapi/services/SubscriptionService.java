@@ -14,6 +14,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service fournissant la gestion des abonnements des utilisateurs aux sujets.
+ * Gère l'ajout et la suppression des abonnements entre les utilisateurs et les sujets.
+ */
+
 @Service
 public class SubscriptionService {
 
@@ -25,6 +30,16 @@ public class SubscriptionService {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+    /**
+     * Abonne un utilisateur à un thème.
+     *
+     * @param userId l'identifiant de l'utilisateur à abonner.
+     * @param subjectId l'identifiant du thème auquel l'utilisateur s'abonne
+     * @throws EntityNotFoundException si l'utilisateur ou le thème n'existe pas
+     * @throws IllegalStateException si l'abonnement existe déjà
+     * @throws DataIntegrityViolationException en cas de violation d'intégrité des données lors de la création de l'abonnement
+     */
 
     public void subscribeUserToSubject(Long userId, Long subjectId) {
         UserEntity user = userRepository.findById(userId)
@@ -51,6 +66,12 @@ public class SubscriptionService {
         }
     }
 
+    /**
+     *Désabonne un utilisateur d'un thème.
+     * @param userId l'identifiant de l'utilisateur à désabonner.
+     * @param subjectId  l'identifiant du thème dont l'utilisateur se désabonne.
+     * @throws EntityNotFoundException si l'abonnement n'existe pas.
+     */
     public void unsubscribeUserFromSubject(Long userId, Long subjectId) {
         SubscriptionId subscriptionId = new SubscriptionId();
         subscriptionId.setUser(userId);
