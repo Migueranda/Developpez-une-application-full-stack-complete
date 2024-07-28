@@ -17,6 +17,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ### MySQL
 
 [Install MySQL](https://dev.mysql.com/downloads/installer/)
+SQL script for creating the schema is available   front/script.sql
 
 ### Optional
 
