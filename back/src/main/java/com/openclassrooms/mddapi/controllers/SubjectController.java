@@ -31,10 +31,4 @@ public class SubjectController {
     public Map<String, List<Subject>> getSubject(SubjectDto subjectDto) {
         return Map.of("subject", subjectService.getSubject(subjectDto));
     }
-
-//    @PutMapping("/subject/{id}")
-//    public ResponseEntity<?> updateSubject(@PathVariable("id") String id, @Valid @RequestBody SubjectDto subjectDto){
-//        SubjectDto updatedSubject = subjectService.updateSubject(Long.valueOf(id), subjectDto);
-//        return ResponseEntity.ok(updatedSubject);
-//    }
 }

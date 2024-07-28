@@ -5,7 +5,6 @@ import com.openclassrooms.mddapi.model.dtos.SubjectDto;
 import com.openclassrooms.mddapi.model.entities.Subject;
 import com.openclassrooms.mddapi.repositories.SubjectRepository;
 import com.openclassrooms.mddapi.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.Data;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,19 +53,5 @@ public class SubjectService {
 
         return result;
     }
-
-
-//    public SubjectDto updateSubject (Long id, SubjectDto subjectDto){
-//
-//        Subject existingSubject = subjectRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Subject not found for id: " + id));
-//
-//        existingSubject.setTitle(subjectDto.getTitle());
-//        existingSubject.setDescription(subjectDto.getDescription());
-//
-//        Subject updatedSubject = subjectRepository.save(existingSubject);
-//        return subjectMapper.toDto(updatedSubject);
-//
-//    }
 
 }
