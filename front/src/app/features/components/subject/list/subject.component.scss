@@ -1,16 +1,16 @@
 
 .mat-card-content{
     display: flex;
-    justify-content: space-around;
-    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
     margin-top: 40px;
 }
-
 .mat-card{
-    width: 40%;
+    width:40%;
+    height:auto ;
     border-radius: 8px;
     background: #F5F5F5;
-
+    margin: 16px!important;    
 }
 
 .mat-card:hover {
@@ -57,4 +57,4 @@ button{
         width: 80%;
         margin-top: 40px;
     }
-  }
+}

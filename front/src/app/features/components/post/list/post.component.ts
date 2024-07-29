@@ -45,8 +45,10 @@ export class PostComponent implements OnInit {
    /**
    * Charge tous les posts disponibles et les noms des utilisateurs associés.
    */
+
   loadPosts(): void {
-    this.postService.getPosts().subscribe({
+    const order = this.sortAscending ? 'asc' : 'desc';
+    this.postService.getPosts('date', order).subscribe({
       next: (posts) => {
         this.posts = posts;
         this.loadUserNames();
@@ -59,7 +61,6 @@ export class PostComponent implements OnInit {
       }
     });
   }
-
    /**
    * Charge les noms des utilisateurs associés aux posts.
    */
@@ -77,9 +78,10 @@ export class PostComponent implements OnInit {
  /**
    * Bascule le tri des posts par date.
    */
+
   toggleSortByDate(): void {
     this.sortAscending = !this.sortAscending;
-    this.sortPosts();
+    this.loadPosts(); 
   }
 
    /**

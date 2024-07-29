@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Post } from '../interface/post.model';
@@ -25,13 +25,11 @@ export class PostService {
    * 
    * @returns {Observable<Post[]>} - Un observable contenant un tableau de posts.
    */
-  getPosts(): Observable<Post[]> {
 
-    return this.httpClient.get<{post: Post[]}>(this.pathService).pipe(
-        map((response: { post: any; }) => response.post) 
-    );
+  getPosts(sortBy: string = 'date', order: string = 'desc'): Observable<Post[]> {
+    const params = new HttpParams().set('sortBy', sortBy).set('order', order);
+    return this.httpClient.get<Post[]>(this.pathService, { params });
   }
-
    /**
    * Crée un nouveau post.
    * 
