@@ -72,7 +72,6 @@ public class PostService {
                 .map(postMapper::toDto)
                 .collect(Collectors.toList());
     }
-
     /**
      * Crée un nouveau post dans la base de données.
      *

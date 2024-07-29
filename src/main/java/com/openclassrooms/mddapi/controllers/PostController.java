@@ -23,20 +23,19 @@ public class PostController {
     /**
      * Récupère tous les posts, triés par un champ spécifique.
      *
-     * @param postDto l'objet de transfert de données contenant les critères de récupération des posts
+    * @param postDto l'objet de transfert de données contenant les critères de récupération des posts
      * @param sortBy le champ par lequel trier les résultats (par défaut, "date")
      * @param order l'ordre de tri (ascendant ou descendant, par défaut "desc")
      * @return une Map contenant une liste de PostDto représentant tous les posts triés
      */
 
     @GetMapping("/post")
-    public Map<String, List<PostDto>> getAllPost(
+    public List<PostDto> getAllPost(
             PostDto postDto,
             @RequestParam(defaultValue = "date") String sortBy,
             @RequestParam(defaultValue = "desc") String order) {
-        return Map.of("post", postService.getAllPost(postDto, sortBy, order));
+        return postService.getAllPost(postDto, sortBy, order);
     }
-
     /**
      * Crée un nouveau post.
      *
