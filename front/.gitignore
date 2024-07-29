@@ -41,13 +41,3 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Ignorer les fichiers et dossiers générés par l'IDE
-.idea/
-.vscode/
-# Ignorer les dossiers de sauvegarde
-back_0.1/
-back_1/
-back_2/
-backupFront/
-# Ignorer d'autres fichiers spécifiques
-*.odt
